@@ -1,7 +1,7 @@
 #!/bin/sh
 
-VENDOR=wiko
-DEVICE=stairway
+VENDOR=micromax
+DEVICE=a116
 
 BASE=../../../vendor/$VENDOR/$DEVICE/proprietary
 
@@ -12,14 +12,14 @@ DIR=`dirname $FILE`
 mkdir -p $BASE/$DIR
     fi
 
-cp /work/chris/android/wiko/backup/system/$FILE $BASE/$FILE
+cp /home/kashif/stock/system/$FILE $BASE/$FILE
 
 #adb pull /system/$FILE $BASE/$FILE
 done
 
 # some extra stuff
-cp /work/chris/android/wiko/backup/system/lib/hw/audio_policy.default.so $BASE/lib/hw/audio_policy.mt6589.so
-cp /work/chris/android/wiko/backup/system/lib/libaudio.primary.default.so $BASE/lib/hw/audio.primary.mt6589.so
+cp /home/kashif/stock/system/lib/hw/audio_policy.default.so $BASE/lib/hw/audio_policy.mt6589.so
+cp /home/kashif/stock/system/lib/libaudio.primary.default.so $BASE/lib/hw/audio.primary.mt6589.so
 
 #adb pull /system/lib/hw/audio_policy.default.so $BASE/lib/hw/audio_policy.mt6589.so
 #adb pull /system/lib/libaudio.primary.default.so $BASE/lib/hw/audio.primary.mt6589.so

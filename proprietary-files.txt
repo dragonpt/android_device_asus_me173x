@@ -167,7 +167,8 @@ etc/firmware/S_ANDRO_SFL.ini
 etc/firmware/WIFI_RAM_CODE_MT6628
 etc/firmware/catcher_filter.bin
 etc/firmware/WMT.cfg
-etc/firmware/touchpanel/tinno-fts-update-0514.ekt
+etc/firmware/ft5206/tinno-fts-update-jiemian.bin
+
 etc/audio_policy.conf
 etc/audio_effects.conf
 etc/mtk_omx_core.cfg
