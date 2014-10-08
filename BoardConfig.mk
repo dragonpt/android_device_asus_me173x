@@ -98,4 +98,5 @@ BOARD_SEPOLICY_DIRS += \
 
 BOARD_SEPOLICY_UNION += \
     file_contexts \
-    device.te
+    device.te \
+    netd.te
