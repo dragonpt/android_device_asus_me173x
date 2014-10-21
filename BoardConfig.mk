@@ -47,7 +47,6 @@ TARGET_POWERHAL_VARIANT := cm
 
 # boot
 TARGET_NO_BOOTLOADER := true
-BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_FOLDER)/boot.mk
 
 # EGL settings
 BOARD_EGL_CFG := device/micromax/a116/egl.cfg
