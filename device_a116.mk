@@ -116,7 +116,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	audio.r_submix.default \
 	audio.a2dp.default \
-	libblisrc
+	libblisrc \
+        libdashplayer
 
 PRODUCT_PACKAGES += \
 	Torch
