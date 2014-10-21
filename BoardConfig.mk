@@ -91,3 +91,11 @@ TARGET_SPECIFIC_HEADER_PATH := device/micromax/a116/include
 
 # allow more than one lun file
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun%d/file"
+
+#SEPolicy
+BOARD_SEPOLICY_DIRS += \
+    device/micromax/a116/sepolicy
+
+BOARD_SEPOLICY_UNION += \
+    file_contexts \
+    device.te
