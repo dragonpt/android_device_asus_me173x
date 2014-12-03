@@ -125,4 +125,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
 
+
+# libcorkscrew is needed for some of the PVR stuff.
+PRODUCT_PACKAGES += \
+	libcorkscrew
+
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
