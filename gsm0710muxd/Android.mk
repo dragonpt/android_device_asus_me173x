@@ -36,7 +36,7 @@ endif
 LOCAL_CFLAGS += -DMTK_RIL_MD1
 
 LOCAL_C_INCLUDES := $(KERNEL_HEADERS)
-LOCAL_LDLIBS := -lpthread
+#LOCAL_LDLIBS := -lpthread
 
 include $(BUILD_EXECUTABLE)
 
@@ -68,6 +68,6 @@ endif
 LOCAL_CFLAGS += -DMTK_RIL_MD2
 
 LOCAL_C_INCLUDES := $(KERNEL_HEADERS)
-LOCAL_LDLIBS := -lpthread
+#LOCAL_LDLIBS := -lpthread
 
 include $(BUILD_EXECUTABLE)
