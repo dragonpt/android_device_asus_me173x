@@ -263,7 +263,7 @@ public class MediaTekRIL extends RIL implements CommandsInterface {
 
             if ((lacValid == true) && (strings[i] != null)) {
                 UiccController uiccController = UiccController.getInstance();
-                IccRecords iccRecords = uiccController.getIccRecords(UiccController.APP_FAM_3GPP);
+                IccRecords iccRecords = uiccController.getIccRecords(mSimId , UiccController.APP_FAM_3GPP);
                 int lacValue = -1;
                 String sEons = null;
                 String lac = lacStr.substring(lacIndex,lacIndex+4);
