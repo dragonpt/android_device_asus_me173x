@@ -240,9 +240,9 @@ public class MediaTekRIL extends RIL implements CommandsInterface {
         boolean lacValid = false;
         int lacIndex=0;
 
-        Rlog.d(LOG_TAG, "lacStr = " + lacStr+" lacStr.length="+lacStr.length()+" strings.length="+strings.length);
+        Rlog.d(RILJ_LOG_TAG, "lacStr = " + lacStr+" lacStr.length="+lacStr.length()+" strings.length="+strings.length);
         if((lacStr.length() > 0) && (lacStr.length()%4 == 0) && ((lacStr.length()/4) == (strings.length/5 ))){
-            Rlog.d(LOG_TAG, "lacValid set to true");
+            Rlog.d(RILJ_LOG_TAG, "lacValid set to true");
             lacValid = true;
         }
 
@@ -267,7 +267,7 @@ public class MediaTekRIL extends RIL implements CommandsInterface {
                 int lacValue = -1;
                 String sEons = null;
                 String lac = lacStr.substring(lacIndex,lacIndex+4);
-                Rlog.d(LOG_TAG, "lacIndex="+lacIndex+" lacValue="+lacValue+" lac="+lac+" plmn numeric="+strings[i+2]+" plmn name"+strings[i+0]);
+                Rlog.d(RILJ_LOG_TAG, "lacIndex="+lacIndex+" lacValue="+lacValue+" lac="+lac+" plmn numeric="+strings[i+2]+" plmn name"+strings[i+0]);
 
                 if(lac != "") {
                     lacValue = Integer.parseInt(lac, 16);
@@ -279,7 +279,7 @@ public class MediaTekRIL extends RIL implements CommandsInterface {
                             Rlog.d(LOG_TAG, "plmn name update to Eons: "+strings[i]);
                         }*/
                     } else {
-                        Rlog.d(LOG_TAG, "invalid lac ignored");
+                        Rlog.d(RILJ_LOG_TAG, "invalid lac ignored");
                     }
                 }
             }
@@ -300,7 +300,7 @@ public class MediaTekRIL extends RIL implements CommandsInterface {
             }
 
             int basebandCapability = SystemProperties.getInt(property_name, 3);
-            Rlog.d(LOG_TAG, "property_name="+property_name+", basebandCapability=" + basebandCapability);
+            Rlog.d(RILJ_LOG_TAG, "property_name="+property_name+", basebandCapability=" + basebandCapability);
             if (3 < basebandCapability) {
                 strings[i+0] = strings[i+0].concat(" " + strings[i+4]);
                 strings[i+1] = strings[i+1].concat(" " + strings[i+4]);
@@ -329,7 +329,7 @@ public class MediaTekRIL extends RIL implements CommandsInterface {
 
         return notification;*/
 
-        Rlog.e(LOG_TAG, "NOT PROCESSING CRSS NOTIFICATION");
+        Rlog.e(RILJ_LOG_TAG, "NOT PROCESSING CRSS NOTIFICATION");
         return null;
     }
 
@@ -343,7 +343,7 @@ public class MediaTekRIL extends RIL implements CommandsInterface {
         response.securityInfo = p.readString();
         
         return response;*/
-        Rlog.e(LOG_TAG, "NOT PROCESSING ETWS NOTIFICATION");
+        Rlog.e(RILJ_LOG_TAG, "NOT PROCESSING ETWS NOTIFICATION");
 
         return null;
     }
@@ -363,7 +363,7 @@ public class MediaTekRIL extends RIL implements CommandsInterface {
         rr = findAndRemoveRequestFromList(serial);
 
         if (rr == null) {
-            Rlog.w(LOG_TAG, "Unexpected solicited response! sn: "
+            Rlog.w(RILJ_LOG_TAG, "Unexpected solicited response! sn: "
                             + serial + " error: " + error);
             return null;
         }
@@ -500,7 +500,7 @@ public class MediaTekRIL extends RIL implements CommandsInterface {
             }} catch (Throwable tr) {
                 // Exceptions here usually mean invalid RIL responses
 
-                Rlog.w(LOG_TAG, rr.serialString() + "< "
+                Rlog.w(RILJ_LOG_TAG, rr.serialString() + "< "
                         + requestToString(rr.mRequest)
                         + " exception, possible invalid RIL response", tr);
 
@@ -620,11 +620,11 @@ public class MediaTekRIL extends RIL implements CommandsInterface {
 		newResponseCode = RIL_UNSOL_RESPONSE_RADIO_STATE_CHANGED;
 		break;
             default:
-                Rlog.i(LOG_TAG, "Unprocessed unsolicited known MTK response: " + response);
+                Rlog.i(RILJ_LOG_TAG, "Unprocessed unsolicited known MTK response: " + response);
         }
 
         if (rewindAndReplace) {
-            Rlog.w(LOG_TAG, "Rewriting MTK unsolicited response to " + newResponseCode);
+            Rlog.w(RILJ_LOG_TAG, "Rewriting MTK unsolicited response to " + newResponseCode);
 
             // Rewrite
             p.setDataPosition(dataPosition);
