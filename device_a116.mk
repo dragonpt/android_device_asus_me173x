@@ -135,4 +135,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
 	libcorkscrew
 
+# Use dlmalloc for better performance
+MALLOC_IMPL := dlmalloc
+
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
