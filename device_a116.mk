@@ -124,6 +124,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
 	audio.r_submix.default \
 	audio.a2dp.default \
+        audio.usb.default \
 	libblisrc \
         libdashplayer
 
@@ -137,8 +138,5 @@ PRODUCT_COPY_FILES += \
 # libcorkscrew is needed for some of the PVR stuff.
 PRODUCT_PACKAGES += \
 	libcorkscrew
-
-# Use dlmalloc for better performance
-MALLOC_IMPL := dlmalloc
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
