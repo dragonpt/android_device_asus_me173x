@@ -10,8 +10,8 @@
 # cwm hack: access /storage/sdcard0 through emmc to find cmupdater directory
 /dev/block/mmcblk0p8 /emmc            vfat      defaults                                recoveryonly
 
-/devices/platform/mtk-msdc.0/mmc_host/mmc0 auto auto defaults voldmanaged=sdcard0:8,nonremovable,noemulatedsd
-/devices/platform/mtk-msdc.1/mmc_host/mmc1 auto auto defaults voldmanaged=sdcard1:auto
+/devices/platform/mtk-msdc.0/mmc_host/mmc0 auto auto defaults voldmanaged=sdcard1:8,nonremovable,noemulatedsd
+/devices/platform/mtk-msdc.1/mmc_host/mmc1 auto auto defaults voldmanaged=sdcard0:auto
 
 /devices/platform/mt_usb auto auto defaults voldmanaged=usbdisk0:auto
 
