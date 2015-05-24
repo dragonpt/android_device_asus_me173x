@@ -108,7 +108,8 @@ PRODUCT_PACKAGES += \
 	audio.a2dp.default \
         audio.usb.default \
 	libblisrc \
-        libdashplayer
+        libdashplayer \
+        libxlog
 
 PRODUCT_PACKAGES += \
 	Torch
