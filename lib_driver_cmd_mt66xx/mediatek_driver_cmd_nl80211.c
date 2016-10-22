@@ -9,7 +9,7 @@
  * license.
  *
  */
-
+#include "hardware_legacy/driver_nl80211.h"
 #include "mediatek_driver_nl80211.h"
 #include "wpa_supplicant_i.h"
 #include "config.h"
@@ -19,9 +19,21 @@
 #include "android_drv.h"
 #endif
 
-int send_and_recv_msgs(struct wpa_driver_nl80211_data *drv, struct nl_msg *msg,
-		       int (*valid_handler)(struct nl_msg *, void *),
-		       void *valid_data);
+typedef struct android_wifi_priv_cmd {
+    char *buf;
+    int used_len;
+    int total_len;
+} android_wifi_priv_cmd;
+
+static int drv_errors = 0;
+
+static void wpa_driver_send_hang_msg(struct wpa_driver_nl80211_data *drv)
+{
+    drv_errors++;
+    if (drv_errors > DRV_NUMBER_SEQUENTIAL_ERRORS) {
+        drv_errors = 0;
+    }
+}
 
 static int testmode_sta_statistics_handler(struct nl_msg *msg, void *arg)
 {
@@ -129,50 +141,16 @@ static int testmode_sta_statistics_handler(struct nl_msg *msg, void *arg)
 }
 
 static void * nl80211_cmd(struct wpa_driver_nl80211_data *drv,
-			  struct nl_msg *msg, int flags, uint8_t cmd)
+              struct nl_msg *msg, int flags, uint8_t cmd)
 {
-	return genlmsg_put(msg, 0, 0, drv->global->nl80211_id,
-			   0, flags, cmd, 0);
+    return genlmsg_put(msg, 0, 0, drv->global->nl80211_id,
+               0, flags, cmd, 0);
 }
 
-static int wpa_driver_nl80211_testmode(void *priv, const u8 *data,
+int wpa_driver_nl80211_testmode(void *priv, const u8 *data,
 	                               size_t data_len)
 {
-	struct i802_bss *bss = priv;
-	struct wpa_driver_nl80211_data *drv = bss->drv;
-	struct nl_msg *msg, *cqm = NULL;
-    struct wpa_driver_testmode_params *params;
-    int index;
-
-	msg = nlmsg_alloc();
-	if (!msg)
-		return -1;
-
-	wpa_printf(MSG_DEBUG, "nl80211: Test Mode buflen = %d", data_len);
-
-    nl80211_cmd(drv, msg, 0, NL80211_CMD_TESTMODE);
-
-	NLA_PUT_U32(msg, NL80211_ATTR_IFINDEX, drv->ifindex);
-	NLA_PUT(msg, NL80211_ATTR_TESTDATA, data_len, data);
-
-    params = (struct wpa_driver_testmode_params *)data;
-
-    /* Mask version field */
-    index = params->hdr.index & BITS(0, 23);
-
-    switch(index) {
-        case 0x10:
-            {
-                struct wpa_driver_get_sta_statistics_params *sta_params = data;
-            
-    		    return send_and_recv_msgs(drv, msg, testmode_sta_statistics_handler, sta_params->buf);            
-            }
-        default:
-            return send_and_recv_msgs(drv, msg, NULL, NULL);
-    }
-    
- nla_put_failure:
-	return -ENOBUFS;
+    return 0;
 
 }
 
@@ -227,7 +205,7 @@ static int wpa_driver_mediatek_set_country(void *priv, const char *alpha2_arg)
 		return -1;
 	}
 	os_memset(&iwr, 0, sizeof(iwr));
-	os_strncpy(iwr.ifr_name, drv->first_bss.ifname, IFNAMSIZ);
+    os_strlcpy(iwr.ifr_name, drv->first_bss->ifname, IFNAMSIZ);
 	sprintf(buf,"COUNTRY %s",alpha2_arg);
 	iwr.u.data.pointer = buf;
 	iwr.u.data.length = strlen(buf);
@@ -243,14 +221,229 @@ static int wpa_driver_mediatek_set_country(void *priv, const char *alpha2_arg)
 
 }
 
-extern const struct wpa_driver_ops wpa_driver_nl80211_ops;
+int wpas_get_sta_statistics(struct wpa_supplicant *wpa_s, char *sta_addr, u8 *buf)
+{
+    struct wpa_driver_get_sta_statistics_params params;
+
+    os_memset(&params, 0, sizeof(params));
+
+    if(sta_addr)
+        os_memcpy(params.addr, sta_addr, ETH_ALEN);
+
+    wpa_printf(MSG_DEBUG, "get_sta_statistics ["MACSTR"]", MAC2STR(params.addr));
+
+    params.hdr.index = 0x10;
+    params.hdr.index = params.hdr.index | (0x01 << 24);
+    params.hdr.buflen = sizeof(struct wpa_driver_get_sta_statistics_params);
+
+    /* buffer for return structure */
+    params.buf = buf;
+
+    return wpa_driver_nl80211_testmode(wpa_s->drv_priv, (u8 *)&params,
+        sizeof(struct wpa_driver_get_sta_statistics_params));
+}
+
+
+static int print_sta_statistics(struct wpa_supplicant *wpa_s, struct wpa_driver_sta_statistics_s *sta_stats,
+              unsigned long mask, char *buf, size_t buflen)
+{
+    size_t i;
+    int ret;
+    char *pos, *end;
+
+    pos = buf;
+    end = buf + buflen;
+
+    ret = os_snprintf(pos, end - pos, "sta_addr="MACSTR"\n", MAC2STR(sta_stats->addr));
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "link_score=%d\n", sta_stats->link_score);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "per=%d\n", sta_stats->per);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "rssi=%d\n", sta_stats->rssi);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "phy=0x%08X\n", sta_stats->phy_mode);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "rate=%.1f\n", sta_stats->tx_rate);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "total_cnt=%d\n", sta_stats->tx_total_cnt);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "threshold_cnt=%d\n", sta_stats->tx_exc_threshold_cnt);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "fail_cnt=%d\n", sta_stats->tx_fail_cnt);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "timeout_cnt=%d\n", sta_stats->tx_timeout_cnt);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "apt=%d\n", sta_stats->tx_avg_process_time);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "aat=%d\n", sta_stats->tx_avg_air_time);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "TC_buf_full_cnt=%d:%d:%d:%d\n",
+                                    sta_stats->tc_buf_full_cnt[TC0_INDEX],
+                                    sta_stats->tc_buf_full_cnt[TC1_INDEX],
+                                    sta_stats->tc_buf_full_cnt[TC2_INDEX],
+                                    sta_stats->tc_buf_full_cnt[TC3_INDEX]);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "TC_sta_que_len=%d:%d:%d:%d\n",
+                                    sta_stats->tc_que_len[TC0_INDEX],
+                                    sta_stats->tc_que_len[TC1_INDEX],
+                                    sta_stats->tc_que_len[TC2_INDEX],
+                                    sta_stats->tc_que_len[TC3_INDEX]);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "TC_avg_que_len=%d:%d:%d:%d\n",
+                                    sta_stats->tc_avg_que_len[TC0_INDEX],
+                                    sta_stats->tc_avg_que_len[TC1_INDEX],
+                                    sta_stats->tc_avg_que_len[TC2_INDEX],
+                                    sta_stats->tc_avg_que_len[TC3_INDEX]);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "TC_cur_que_len=%d:%d:%d:%d\n",
+                                    sta_stats->tc_cur_que_len[TC0_INDEX],
+                                    sta_stats->tc_cur_que_len[TC1_INDEX],
+                                    sta_stats->tc_cur_que_len[TC2_INDEX],
+                                    sta_stats->tc_cur_que_len[TC3_INDEX]);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "flag=0x%08X\n", sta_stats->flag);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "reserved0=");
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+    for(i = 0; i < 16; i++) {
+        ret = os_snprintf(pos, end - pos, "%02X", sta_stats->reserved[i]);
+        if (ret < 0 || ret >= end - pos)
+            return 0;
+        pos += ret;
+
+        if(((i + 1) % 4) == 0) {
+            ret = os_snprintf(pos, end - pos, " ", sta_stats->reserved[i]);
+            if (ret < 0 || ret >= end - pos)
+                return 0;
+            pos += ret;
+        }
+    }
+    ret = os_snprintf(pos, end - pos, "\n", sta_stats->reserved[i]);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "reserved1=");
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+    for(i = 16; i < 32; i++) {
+        ret = os_snprintf(pos, end - pos, "%02X", sta_stats->reserved[i]);
+        if (ret < 0 || ret >= end - pos)
+            return 0;
+        pos += ret;
+
+        if(((i + 1) % 4) == 0) {
+            ret = os_snprintf(pos, end - pos, " ", sta_stats->reserved[i]);
+            if (ret < 0 || ret >= end - pos)
+                return 0;
+            pos += ret;
+        }
+    }
+    ret = os_snprintf(pos, end - pos, "\n", sta_stats->reserved[i]);
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    ret = os_snprintf(pos, end - pos, "====\n");
+    if (ret < 0 || ret >= end - pos)
+        return 0;
+    pos += ret;
+
+    return pos - buf;
+}
+
+int wpa_driver_get_sta_statistics(struct wpa_supplicant *wpa_s, char *addr,
+                                char *buf, size_t buflen)
+{
+    char *str = NULL;
+    int len = 0;
+    u8 sta_addr[ETH_ALEN];
+
+    struct wpa_driver_sta_statistics_s sta_statistics;
+
+
+    if (hwaddr_aton(addr, sta_addr)) {
+        wpa_printf(MSG_DEBUG, "CTRL_IFACE GET_STA_STATISTICS: invalid "
+               "address '%s'", addr);
+        return -1;
+    }
+
+    if (wpas_get_sta_statistics(wpa_s, sta_addr, (u8 *)&sta_statistics) < 0) {
+        wpa_printf(MSG_DEBUG, "CTRL_IFACE GET_STA_STATISTICS: command failed");
+        return -1;
+    }
+    len = print_sta_statistics(wpa_s, &sta_statistics, 0x00, buf, buflen);
+
+    return len;
+
+}
 int wpa_driver_nl80211_driver_cmd(void *priv, char *cmd, char *buf,
 				  size_t buf_len )
 {
 	struct i802_bss *bss = priv;
 	struct wpa_driver_nl80211_data *drv = bss->drv;
+    struct ifreq ifr;
+    android_wifi_priv_cmd priv_cmd;
 	struct wpa_supplicant *wpa_s;
+    struct hostapd_data *hapd;
 	int ret = -1;
+    int handled = 0;
+    union wpa_event_data event;
 
 	if (drv == NULL) {
 		wpa_printf(MSG_ERROR, "%s: drv is NULL. Exiting", __func__);
@@ -260,47 +453,59 @@ int wpa_driver_nl80211_driver_cmd(void *priv, char *cmd, char *buf,
 		wpa_printf(MSG_ERROR, "%s: drv->ctx is NULL. Exiting", __func__);
 		return -1;
 	}
+    if (os_strcmp(bss->ifname, "ap0") == 0) {
+        hapd = (struct hostapd_data *)(drv->ctx);
+    }
+    else {
 	wpa_s = (struct wpa_supplicant *)(drv->ctx);
 	if (wpa_s->conf == NULL) {
 		wpa_printf(MSG_ERROR, "%s: wpa_s->conf is NULL. Exiting", __func__);
 		return -1;
+        }
 	}
 
-	wpa_printf(MSG_DEBUG, "iface %s recv  cmd %s ignored", bss->ifname, cmd);
+    wpa_printf(MSG_DEBUG, "iface %s recv cmd %s", bss->ifname, cmd);
+    handled = 1;
 
 	if (os_strncasecmp(cmd, "POWERMODE ", 10) == 0) {
 		int state;
 		state = atoi(cmd + 10);
 		wpa_printf(MSG_DEBUG, "POWERMODE=%d", state);
+    }  else if (os_strncasecmp(cmd, "GET_STA_STATISTICS ", 19) == 0) {
+        ret = wpa_driver_get_sta_statistics(wpa_s, cmd + 19, buf, buf_len);
 	}  else if (os_strncmp(cmd, "MACADDR", os_strlen("MACADDR"))==0) {
 		u8 macaddr[ETH_ALEN] = {};
         os_memcpy(&macaddr, wpa_s->own_addr, ETH_ALEN);
         ret = snprintf(buf, buf_len, "Macaddr = " MACSTR "\n", MAC2STR(macaddr));
         wpa_printf(MSG_DEBUG, "%s", buf);
     } else if(os_strncasecmp(cmd, "COUNTRY", os_strlen("COUNTRY"))==0) {
-        wpa_printf(MSG_DEBUG, "set country: %s", cmd+8);
+        wpa_printf(MSG_INFO, "set country: %s", cmd+8);
         //ret = wpa_drv_set_country(wpa_s, cmd+8);
-        if(ret == 0) {
-            //os_memcpy(wpa_s->conf->country,cmd+8,2);
-            //ret = wpa_config_write(wpa_s->confname, wpa_s->conf);
-        }
-		wpa_printf(MSG_DEBUG, "skip cmd %s", cmd);
+        ret = wpa_driver_mediatek_set_country(priv, cmd+8);
     } else if (os_strcasecmp(cmd, "start") == 0) {
-        wpa_printf(MSG_DEBUG,"skip cmd %s", cmd);
+        if (ret = linux_set_iface_flags(drv->global->ioctl_sock,
+                                       drv->first_bss->ifname, 1)) {
+            wpa_printf(MSG_INFO, "nl80211: Could not set interface UP, ret=%d \n", ret);
+        } else {
+            wpa_msg(drv->ctx, MSG_INFO, "CTRL-EVENT-DRIVER-STATE STARTED");
+        }
     } else if (os_strcasecmp(cmd, "stop") == 0) {
-// [Android4.3] remove disassociate function 
-//       ret = wpa_driver_nl80211_ops.disassociate(bss, drv->bssid, WLAN_REASON_DEAUTH_LEAVING);
-        //ret = wpa_driver_wext_driver_start(drv, 1);
-        if (ret == 0)
+        if (drv->associated) {
+            ret = wpa_drv_deauthenticate(wpa_s, drv->bssid, WLAN_REASON_DEAUTH_LEAVING);
+            if (ret != 0)
+                wpa_printf(MSG_DEBUG,"DRIVER-STOP error, ret=%d", ret);
+        } else {
+            wpa_printf(MSG_INFO, "nl80211: not associated, no need to deauthenticate \n");
+        }
+
+        if (ret = linux_set_iface_flags(drv->global->ioctl_sock,
+                                       drv->first_bss->ifname, 0)) {
+            wpa_printf(MSG_INFO, "nl80211: Could not set interface Down, ret=%d \n", ret);
+        } else {
             wpa_msg(drv->ctx, MSG_INFO, "CTRL-EVENT-DRIVER-STATE STOPPED");
-        wpa_printf(MSG_DEBUG,"DRIVER-STOP: %d", ret);
-		if (linux_set_iface_flags(drv->global->ioctl_sock, 
-                                       drv->first_bss.ifname, 0)) {
-			wpa_printf(MSG_INFO, "nl80211: Could not set interface Down \n");
 		}
     } else if (os_strncasecmp(cmd, "getpower", 8) == 0) {
         u32 mode;
-//        ret = wpa_driver_wext_driver_get_power(drv, &mode);
         if (ret == 0) {
             ret = snprintf(buf, buf_len, "powermode = %u\n", mode);
             wpa_printf(MSG_DEBUG, "%s", buf);
@@ -310,7 +515,6 @@ int wpa_driver_nl80211_driver_cmd(void *priv, char *cmd, char *buf,
         }
     } else if (os_strncasecmp(cmd, "get-rts-threshold", 17) == 0) {
         u32 thd;
-//        ret = wpa_driver_wext_driver_get_rts(drv, &thd);
         if (ret == 0) {
             ret = snprintf(buf, buf_len, "rts-threshold = %u\n", thd);
             wpa_printf(MSG_DEBUG, "%s", buf);
@@ -323,8 +527,6 @@ int wpa_driver_nl80211_driver_cmd(void *priv, char *cmd, char *buf,
         char *endp;
         if (*cp != '\0') {
             thd = (u32)strtol(cp, &endp, 0);
-//            if (endp != cp)
-//                ret = wpa_driver_wext_driver_set_rts(drv, thd);
         }
 	} else if (os_strncasecmp(cmd, "rxfilter-add", 12) == 0 ) {
 		unsigned long sw_cmd = 0x9F000000;
@@ -393,8 +595,42 @@ int wpa_driver_nl80211_driver_cmd(void *priv, char *cmd, char *buf,
         unsigned long idx = 0;
         wpa_driver_nl80211_driver_sw_cmd(priv, 1, &sw_cmd, &idx);
         ret = 0;
+    }
+    else {
+        handled = 0;
+        wpa_printf(MSG_INFO,"Unsupported command");
+    }
+
+    if(handled == 0) {
+
+        os_memcpy(buf, cmd, strlen(cmd) + 1);
+        memset(&ifr, 0, sizeof(ifr));
+        memset(&priv_cmd, 0, sizeof(priv_cmd));
+        os_strlcpy(ifr.ifr_name, bss->ifname, IFNAMSIZ);
+
+        priv_cmd.buf = buf;
+        priv_cmd.used_len = buf_len;
+        priv_cmd.total_len = buf_len;
+        ifr.ifr_data = &priv_cmd;
+
+        if ((ret = ioctl(drv->global->ioctl_sock, SIOCDEVPRIVATE + 1, &ifr)) < 0) {
+            wpa_printf(MSG_ERROR, "%s: failed to issue private commands\n", __func__);
+            wpa_driver_send_hang_msg(drv);
     } else {
-        wpa_printf(MSG_DEBUG,"Unsupported command");
+            wpa_printf(MSG_DEBUG, "%s: ret = %d used = %u total = %u",
+                            __func__, ret , priv_cmd.used_len, priv_cmd.total_len);
+
+            drv_errors = 0;
+            ret = 0;
+                    ret = priv_cmd.used_len;
+                if ((os_strncasecmp(cmd, "WLS_BATCHING", 12) == 0))
+                        ret = strlen(buf);
+            if (os_strncasecmp(cmd, "SETBAND", 7) == 0) {
+                wpa_printf(MSG_INFO, "%s: Unsupported command SETBAND\n",__func__);
+                    }
+            wpa_printf(MSG_INFO, "%s: buf = %s ret = %d used = %u total = %u",
+                            __func__, buf, ret , priv_cmd.used_len, priv_cmd.total_len);
+        }
     }
 
     return ret;
@@ -414,7 +650,7 @@ int wpa_driver_get_p2p_noa(void *priv, u8 *buf, size_t len)
 	struct i802_bss *bss = priv;
 	struct wpa_driver_nl80211_data *drv = bss->drv;
 
-	wpa_printf(MSG_DEBUG, "iface %s P2P_GET_NOA, ignored"); 
+    wpa_printf(MSG_DEBUG, "iface %s P2P_GET_NOA, ignored", bss->ifname);
 	return -1;
 }
 
@@ -423,7 +659,7 @@ int wpa_driver_set_p2p_ps(void *priv, int legacy_ps, int opp_ps, int ctwindow)
 	struct i802_bss *bss = priv;
 	struct wpa_driver_nl80211_data *drv = bss->drv;
 
-	wpa_printf(MSG_DEBUG, "iface %s P2P_SET_PS, ignored"); 
+    wpa_printf(MSG_DEBUG, "iface %s P2P_SET_PS, ignored", bss->ifname);
 	return -1;
 }
 
@@ -434,6 +670,6 @@ int wpa_driver_set_ap_wps_p2p_ie(void *priv, const struct wpabuf *beacon,
 	struct i802_bss *bss = priv;
 	struct wpa_driver_nl80211_data *drv = bss->drv;
 
-	wpa_printf(MSG_DEBUG, "iface %s set_ap_wps_p2p_ie, ignored"); 
-	return -1;
+    wpa_printf(MSG_DEBUG, "iface %s set_ap_wps_p2p_ie, ignored", bss->ifname);
+    return 0;
 }
