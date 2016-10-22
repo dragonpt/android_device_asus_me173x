@@ -1,7 +1,7 @@
 #!/bin/sh
 
-VENDOR=micromax
-DEVICE=a116
+VENDOR=huawei	
+DEVICE=g700
 
 BASE=../../../vendor/$VENDOR/$DEVICE/proprietary
 

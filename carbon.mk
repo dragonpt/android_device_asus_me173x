@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Inherit device configuration
-$(call inherit-product, device/micromax/a116/full_a116.mk)
+$(call inherit-product, device/huawei/g700/full_g700.mk)
 
 # Inherit CM common GSM stuff.
 $(call inherit-product, vendor/carbon/config/common_gsm.mk)
@@ -26,9 +26,9 @@ $(call inherit-product, vendor/carbon/config/common.mk)
 TARGET_SCREEN_HEIGHT := 1280
 TARGET_SCREEN_WIDTH := 720
 
-PRODUCT_NAME := carbon_a116
-PRODUCT_DEVICE := a116
-PRODUCT_MODEL := Canvas HD
-PRODUCT_RELEASE_NAME := a116
-PRODUCT_BRAND := Micromax
-PRODUCT_MANUFACTURER := Micromax
+PRODUCT_NAME := carbon_g700
+PRODUCT_DEVICE := g700
+PRODUCT_MODEL := Ascend G700
+PRODUCT_RELEASE_NAME := g700
+PRODUCT_BRAND := Huawei
+PRODUCT_MANUFACTURER := Huawei

@@ -13,16 +13,16 @@
 # limitations under the License.
 
 # Inherit device configuration
-$(call inherit-product, device/micromax/a116/full_a116.mk)
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
+$(call inherit-product, device/huawei/g700/full_g700.mk)
+$(call inherit-product, vendor/omni/config/common.mk)
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1280
 TARGET_SCREEN_WIDTH := 720
 
-PRODUCT_NAME := cm_a116
-PRODUCT_DEVICE := a116
-PRODUCT_MODEL := Canvas HD
-PRODUCT_RELEASE_NAME := a116
-PRODUCT_BRAND := Micromax
-PRODUCT_MANUFACTURER := Micromax
+PRODUCT_NAME := omni_g700
+PRODUCT_DEVICE := g700
+PRODUCT_MODEL := Huawei G700
+PRODUCT_BRAND := huawei
+PRODUCT_MANUFACTURER := huawei
+PRODUCT_RESTRICT_VENDOR_FILES := false

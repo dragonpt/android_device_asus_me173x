@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$(call inherit-product-if-exists, vendor/micromax/a116/a116-vendor.mk)
+#include device/huawei/$(MTK_TARGET_PROJECT)/ProjectConfig.mk
+$(call inherit-product-if-exists, vendor/huawei/g700/g700-vendor.mk)
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay/
 
@@ -119,3 +120,7 @@ PRODUCT_PACKAGES += \
 	libcorkscrew
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
+
+# inherit 6589 platform
+#$(call inherit-product, device/mediatek/mt6589/device.mk)
+#$(call inherit-product-if-exists, vendor/huawei/libs/$(MTK_TARGET_PROJECT)/device-vendor.mk)
