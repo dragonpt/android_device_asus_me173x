@@ -50,7 +50,7 @@ PRODUCT_COPY_FILES += \
         frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
         frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
 	$(LOCAL_PATH)/media_codecs.xml:system/etc/media_codecs.xml \
-	$(LOCAL_PATH)/media_profiles.xml:system/etc/media_profile.xml
+	$(LOCAL_PATH)/media_profiles.xml:system/etc/media_profiles.xml
 
 PRODUCT_PROPERTY_OVERRIDES := \
 	fmradio.driver.chip=3 \
@@ -92,29 +92,50 @@ PRODUCT_PROPERTY_OVERRIDES := \
 PRODUCT_TAGS += dalvik.gc.type-precise
 
 PRODUCT_PACKAGES += \
-	gsm0710muxd
+	gsm0710muxd \
+	gsm0710muxdmd2
 
-# wifi
+# Wifi
 PRODUCT_PACKAGES += \
-	lib_driver_cmd_mtk
+    libwpa_client \
+    hostapd \
+    dhcpcd.conf \
+    wpa_supplicant \
+    wpa_supplicant.conf
+    
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/hostapd/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
+    $(LOCAL_PATH)/configs/hostapd/hostapd.accept:system/etc/hostapd/hostapd.accept \
+    $(LOCAL_PATH)/configs/hostapd/hostapd.deny:system/etc/hostapd/hostapd.deny
 
 PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
         $(LOCAL_PATH)/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
         $(LOCAL_PATH)/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
+# GPS
+PRODUCT_COPY_FILES += \
+     $(LOCAL_PATH)/configs/agps_profiles_conf2.xml:system/etc/agps_profiles_conf2.xml
+     
 # audio
 PRODUCT_PACKAGES += \
 	audio.r_submix.default \
 	audio.a2dp.default \
         audio.usb.default \
 	libblisrc \
-        libdashplayer \
         libxlog
 
+# Lights
+PRODUCT_PACKAGES += \
+    lights.mt6589
+    
 PRODUCT_PACKAGES += \
 	Torch
 
+# GPU
+PRODUCT_PACKAGES += \
+    pvrsrvctl
+    
 # libcorkscrew is needed for some of the PVR stuff.
 PRODUCT_PACKAGES += \
 	libcorkscrew

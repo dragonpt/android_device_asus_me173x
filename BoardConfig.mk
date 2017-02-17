@@ -109,7 +109,12 @@ BOARD_SEPOLICY_DIRS += \
 BOARD_SEPOLICY_UNION += \
     file_contexts \
     device.te \
-    netd.te
+    netd.te \
+    app.te \
+    bootanimation.te \
+    pvrsrvctl.te \
+    surfaceflinger.te \
+    system.te
 
 DEVICE_RESOLUTION := 720x1280
 
