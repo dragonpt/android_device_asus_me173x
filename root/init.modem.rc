@@ -9,7 +9,9 @@ on post-fs-data
     mkdir /data/nvram/md  0770 root nvram
     mkdir /data/nvram/md2 0770 root nvram
 
-    chown ccci ccci /sys/kernel/ccci/boot
+    insmod /system/lib/modules/ccci_plat.ko
+    insmod /system/lib/modules/ccci.ko
+    chown ccci ccci /sys/class/BOOT/BOOT/boot/md
 
     # xplod: this is not in the original mtk file... But I have no
     # idea what kind of sorcery normally sets them
