@@ -1,0 +1,33 @@
+# surfaceflinger - display compositor service
+permissive surfaceflinger;
+
+# Set properties.
+allow surfaceflinger debug_prop:property_service set;
+
+# for debug purpose
+allow surfaceflinger self:capability { net_admin sys_nice };
+allow surfaceflinger self:netlink_socket { read bind create };
+allow surfaceflinger debug_prop:property_service set;
+allow surfaceflinger system_data_file:dir { write add_name create};
+allow surfaceflinger system_data_file:file { write create open };
+allow surfaceflinger proc:file write;
+allow surfaceflinger shell_exec:file { read execute open execute_no_trans };
+allow surfaceflinger anr_data_file:dir { write search create add_name };
+allow surfaceflinger anr_data_file:file { create write};
+
+# for using toolbox
+allow surfaceflinger system_file:file x_file_perms;
+
+# for bootanimation
+allow surfaceflinger bootanim:dir search;
+allow surfaceflinger bootanim:file { read getattr open };
+allow surfaceflinger self:capability dac_override;
+
+# for ipo
+#allow surfaceflinger ipod:dir search;
+#binder_call(surfaceflinger, ipod)
+
+# for system shrinks memory pages when low memory
+allow surfaceflinger platform_app_tmpfs:file write;
+allow surfaceflinger isolated_app_tmpfs:file write;
+allow surfaceflinger untrusted_app_tmpfs:file write;

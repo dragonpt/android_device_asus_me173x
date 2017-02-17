@@ -1,2 +1,10 @@
+# GPU device
+/dev/mtkfb_vsync u:object_r:gpu_device:s0
+
+#/dev/pvrsrvkm		u:object_r:gpu_device:s0
+/dev/pvr_sync		u:object_r:gpu_device:s0
+
+/system/bin/pvrsrvctl   u:object_r:pvrsrvctl_exec:s0
+
 # Wifi device
 /dev/wmtWifi       u:object_r:wmtWifi_device:s0
