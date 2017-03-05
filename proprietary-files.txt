@@ -36,7 +36,7 @@ etc/firmware/mt6628/mt6628_fm_v3_patch.bin
 etc/firmware/mt6628/mt6628_fm_rom.bin
 etc/firmware/mt6628/mt6628_fm_v1_patch.bin
 etc/firmware/mt6628/mt6628_fm_v5_coeff.bin
-etc/firmware/modem_1_3g_n.img
+# etc/firmware/modem_1_3g_n.img
 etc/firmware/mt6628_ant_m1.cfg
 etc/firmware/mt6628_patch_e2_0_hdr.bin
 etc/firmware/mt6628_patch_e1_hdr.bin
@@ -45,7 +45,7 @@ etc/firmware/S_ANDRO_SFL.ini
 etc/firmware/WIFI_RAM_CODE_MT6628
 etc/firmware/catcher_filter.bin
 etc/firmware/WMT.cfg
-etc/firmware/touchpanel/tinno-fts-update-0514.ekt
+# etc/firmware/touchpanel/tinno-fts-update-0514.ekt
 etc/throttle.sh
 etc/mtk_omx_core.cfg
 etc/audio_effects.conf
@@ -54,47 +54,51 @@ etc/audio_policy.conf
 etc/.tp/thermal.off.conf
 etc/.tp/thermal.conf
 etc/.tp/.ht120.mtc
-bin/drvbd
-bin/thermal
-bin/mtk_agpsd
-bin/bmm050d
-bin/thermal_manager
-bin/nvram_daemon
+# bin/drvbd
 bin/6620_launcher
-bin/akmd8975
-bin/muxreport
-bin/permission_check
-bin/ami304d
-bin/ccci_fsd
-bin/wmt_loader
-bin/rild
-bin/orientationd
-bin/pppd
 bin/akmd8963
-bin/wlan_loader
-bin/rildmd2
+bin/akmd8975
+bin/ami304d
+bin/bmm050d
+bin/ccci_fsd
 bin/ccci_mdinit
-bin/msensord
-bin/memsicd
-bin/nvram_agent_binder
-bin/pppd_dt
 bin/geomagneticd
+bin/hald
+bin/memsicd
+bin/msensord
+bin/mtk_agpsd
+bin/muxreport
+bin/nvram_daemon
+bin/nvram_agent_binder
+bin/orientationd
+bin/permission_check
+bin/pppd
+bin/pppd_dt
+bin/rild
+bin/rildmd2
+bin/stp_dump3
+bin/thermal
+bin/thermal_manager
+bin/wlan_loader
 lib/libcam.paramsmgr.so
-lib/libcam_mmp.so
+# lib/libcam_mmp.so
 lib/libion.so
 lib/libblisrc.so
 lib/libblisrc32.so
 lib/libdpframework.so
-lib/libcamera_metadata.so
+# lib/libcamera_metadata.so
 lib/libbluetooth_mtk.so
 lib/libJpgEncPipe.so
 lib/libaudiodcrflt.so
 lib/libcameracustom.so
 lib/mtk-ril.so
-lib/libnvram_platform.so
+lib/mtk-rilmd2.so
+# lib/libnvram_platform.so
 lib/libnvram.so
 lib/libcam.utils.so
 lib/librilmtk.so
+lib/librilmtkmd2.so
+lib/libutilrilmtk.so
 lib/libmsbc_mtk.so
 lib/libaudiocomponentengine.so
 lib/libbluetoothdrv.so
@@ -102,25 +106,28 @@ lib/libdpframework_os.so
 lib/libcustom_nvram.so
 lib/libbwc.so
 lib/libhwm.so
-lib/libcam_platform.so
+lib/libkeystore_client.so
+# lib/libcam_platform.so
 lib/libfeatureio.so
 lib/libmtklimiter.so
-lib/libcam_utils.so
+# lib/libcam_utils.so
 lib/libbessound_mtk.so
-lib/libcamera_client.so
+# lib/libcamera_client.so
 lib/libcam.campipe.so
 lib/libcam.camadapter.so
 lib/lib3a.so
 lib/libmtk_drvb.so
 lib/libmpo.so
 lib/libcam.client.so
-lib/libcameraservice.so
+# lib/libcameraservice.so
 lib/libspeech_enh_lib.so
 lib/libssladp.so
 lib/libmpoencoder.so
-lib/libcam.exif.so
-lib/libcam.device1.so
+# lib/libcam.exif.so
+# lib/libcam.device1.so
+lib/libaudio.primary.default.so
 lib/libaudiocustparam.so
+lib/libaudio.a2dp.default.so
 lib/libdpframework_plat.so
 lib/libcamdrv.so
 lib/libaudiosetting.so
@@ -135,7 +142,10 @@ lib/libcam.camshot.so
 lib/libm4u.so
 lib/hw/hwcomposer.mt6589.so
 lib/hw/gps.default.so
-lib/hw/audio.primary.mt6589.so
+lib/hw/audio.primary.default.so
+lib/hw/libaudio.r_submix.default.so
+lib/hw/libaudio.usb.default.so
+lib/hw/audio_policy.stub.so
 lib/hw/lights.default.so
 lib/hw/power.default.so
 lib/hw/local_time.default.so
@@ -143,10 +153,11 @@ lib/hw/camera.default.so
 lib/hw/sensors.default.so
 lib/hw/gralloc.default.so
 lib/hw/keystore.default.so
-lib/libcam.utils.sensorlistener.so
+# lib/libcam.utils.sensorlistener.so
 lib/libaudiocompensationfilter.so
-lib/libcam_hwutils.so
-lib/libnvram_sec.so
+# lib/libcam_hwutils.so
+lib/libcam_camera_exif.so
+# lib/libnvram_sec.so
 lib/libcamalgo.so
 lib/libnvram_daemon_callback.so
 xbin/libmnlp_mt6628
@@ -177,3 +188,4 @@ vendor/lib/egl/libGLESv2_mtk.so
 vendor/lib/libpvrANDROID_WSEGL.so
 vendor/lib/libBLPP.so
 vendor/lib/hw/gralloc.mt6589.so
+vendor/lib/hw/audio.a2dp.blueangel.so
