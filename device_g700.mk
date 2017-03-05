@@ -121,16 +121,19 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
 	audio.r_submix.default \
 	audio.a2dp.default \
-        audio.usb.default \
-	libblisrc \
-        libxlog
+        audio.usb.default 
+
+PRODUCT_PACKAGES += \
+    libxlog
+    
+PRODUCT_PACKAGES += \
+    audio_policy.default
 
 # Lights
 PRODUCT_PACKAGES += \
     lights.mt6589
     
-PRODUCT_PACKAGES += \
-	Torch
+PRODUCT_PACKAGES += Torch
 
 # GPU
 PRODUCT_PACKAGES += \
@@ -139,6 +142,10 @@ PRODUCT_PACKAGES += \
 # libcorkscrew is needed for some of the PVR stuff.
 PRODUCT_PACKAGES += \
 	libcorkscrew
+
+# Boot animation
+TARGET_SCREEN_HEIGHT := 1280
+TARGET_SCREEN_WIDTH := 720
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 
