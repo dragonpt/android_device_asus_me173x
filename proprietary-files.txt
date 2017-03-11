@@ -129,6 +129,8 @@ lib/libaudio.primary.default.so
 lib/libaudiocustparam.so
 lib/libaudio.a2dp.default.so
 lib/libdpframework_plat.so
+lib/libdrmmtkplugin.so
+lib/libdrmmtkutil.so
 lib/libcamdrv.so
 lib/libaudiosetting.so
 lib/libbessound_hd_mtk.so
