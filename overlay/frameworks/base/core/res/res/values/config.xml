@@ -92,7 +92,7 @@
     <bool name="config_automatic_brightness_available">true</bool>
 
     <integer-array name="config_autoBrightnessLevels">
-        <item>16</item>
+        <item>32</item>
 	<item>32</item>
 	<item>50</item>
 	<item>100</item>
@@ -109,7 +109,7 @@
 	<item>10000</item>
     </integer-array>
     <integer-array name="config_autoBrightnessLcdBacklightValues">
-        <item>30</item>
+        <item>40</item>
 	<item>40</item>
 	<item>50</item>
 	<item>60</item>
@@ -127,8 +127,12 @@
 	<item>255</item>
     </integer-array>
 
+    <integer name="config_screenBrightnessDim">26</integer>
+    <integer name="config_screenBrightnessSettingMinimum">32</integer>
+    
     <bool name="config_user_notification_of_restrictied_mobile_access">false</bool>
-
+    <color name="config_defaultNotificationColor">#ffffff00</color>
+    <bool name="config_multiColorNotificationLed">true</bool>   
     <!-- Performance profiles -->
     <string name="config_perf_profile_prop">sys.perf.profile</string>
     <string name="config_perf_profile_default_entry">1</string>
