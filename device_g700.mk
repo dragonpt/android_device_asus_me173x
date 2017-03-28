@@ -21,38 +21,9 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay/
 MOD_TGT := /system/lib/modules
 MOD_SRC := $(LOCAL_PATH)/prebuilt/modules
 
-
-PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/root/fstab.mt6589:root/fstab.mt6589
-
-PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/root/ueventd.mt6589.rc:root/ueventd.mt6589.rc \
-	$(LOCAL_PATH)/root/init.mt6589.rc:root/init.mt6589.rc \
-	$(LOCAL_PATH)/root/init.modem.rc:root/init.modem.rc \
-	$(LOCAL_PATH)/root/init.protect.rc:root/init.protect.rc \
-	$(LOCAL_PATH)/root/init.mt6589.usb.rc:/root/init.mt6589.usb.rc
-
-# frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml
-
-PRODUCT_COPY_FILES += \
-	frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
-	frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-	frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
-	frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
-	frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
-	frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-	frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
-	frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
-	frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml
-
-PRODUCT_COPY_FILES += \
-        frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
-        frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
-        frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
-	$(LOCAL_PATH)/media_codecs.xml:system/etc/media_codecs.xml \
-	$(LOCAL_PATH)/media_profiles.xml:system/etc/media_profiles.xml
-
 PRODUCT_PROPERTY_OVERRIDES := \
+        service.adb.root=1 \
+        persist.sys.root_access=1 \
 	fmradio.driver.chip=3 \
 	gps.solution.combo.chip=1 \
 	mediatek.wlan.chip=MT6628 \
@@ -85,6 +56,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
 	ro.opengles.version=131072 \
 	ro.sf.lcd_density=320 \
 	ro.telephony.ril_class=MediaTekRIL \
+        ro.telephony.ril.config=fakeiccid \
 	wifi.direct.interface=p2p0 \
 	wifi.interface=wlan0 \
 	wifi.tethering.interface=ap0
@@ -95,12 +67,23 @@ PRODUCT_PACKAGES += \
 	gsm0710muxd \
 	gsm0710muxdmd2
 
+# audio
+PRODUCT_PACKAGES += \
+	audio.r_submix.default \
+	audio.a2dp.default \
+        audio.usb.default \
+        audio_policy.default
+      
+PRODUCT_COPY_FILES += \
+        frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+        frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+        frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
+	$(LOCAL_PATH)/media_codecs.xml:system/etc/media_codecs.xml \
+	$(LOCAL_PATH)/media_profiles.xml:system/etc/media_profiles.xml
+
 # Wifi
 PRODUCT_PACKAGES += \
-    libwpa_client \
-    hostapd \
     dhcpcd.conf \
-    wpa_supplicant \
     wpa_supplicant.conf
     
 PRODUCT_COPY_FILES += \
@@ -113,26 +96,55 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
         $(LOCAL_PATH)/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
+# Keylayout
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/mtk-kpd.kl:system/usr/keylayout/mtk-kpd.kl \
+
+# Thermal
+PRODUCT_COPY_FILES += \
+     $(LOCAL_PATH)/configs/thermal.conf:system/etc/.tp/thermal.conf \
+     $(LOCAL_PATH)/configs/.ht120.mtc:system/etc/.tp/.ht120.mtc \
+     $(LOCAL_PATH)/configs/thermal.off.conf:system/etc/.tp/thermal.off.conf
+
 # GPS
 PRODUCT_COPY_FILES += \
      $(LOCAL_PATH)/configs/agps_profiles_conf2.xml:system/etc/agps_profiles_conf2.xml
      
-# audio
-PRODUCT_PACKAGES += \
-	audio.r_submix.default \
-	audio.a2dp.default \
-        audio.usb.default 
-
 PRODUCT_PACKAGES += \
     libxlog
-    
-PRODUCT_PACKAGES += \
-    audio_policy.default
 
-# Lights
-PRODUCT_PACKAGES += \
-    lights.mt6589
+# Ramdisk
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/root/fstab.mt6589:root/fstab.mt6589 \
+	$(LOCAL_PATH)/root/ueventd.mt6589.rc:root/ueventd.mt6589.rc \
+	$(LOCAL_PATH)/root/init.mt6589.rc:root/init.mt6589.rc \
+	$(LOCAL_PATH)/root/init.modem.rc:root/init.modem.rc \
+	$(LOCAL_PATH)/root/init.protect.rc:root/init.protect.rc \
+	$(LOCAL_PATH)/root/init.mt6589.usb.rc:/root/init.mt6589.usb.rc
+
+# Permissions
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
+    frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+    frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
+    frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml \
+    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
+    frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
+    frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
+    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
+    frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
+    frameworks/native/data/etc/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml \
+    frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
+    frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
+    frameworks/native/data/etc/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
+    frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
+    frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml
     
+# Lights
+#PRODUCT_PACKAGES += \
+#    lights.mt6589
+
+# Torch    
 PRODUCT_PACKAGES += Torch
 
 # GPU
@@ -143,12 +155,18 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	libcorkscrew
 
+ifeq ($(PRODUCT_PREBUILT_WEBVIEWCHROMIUM),yes)
+
+PRODUCT_PACKAGES += \
+	$(LOCAL_PATH)/prebuilt/chromium/app/webview/webview.apk:system/app/webview/webview.apk \
+	$(LOCAL_PATH)/prebuilt/chromium/app/webview/lib/arm/libwebviewchromium.so:system/app/webview/lib/arm/libwebviewchromium.so \
+	$(LOCAL_PATH)/prebuilt/chromium/lib/libwebviewchromium.so:system/lib/libwebviewchromium.so \
+	$(LOCAL_PATH)/prebuilt/chromium/lib/libwebviewchromium_loader.so:system/lib/libwebviewchromium_loader.so \
+	$(LOCAL_PATH)/prebuilt/chromium/lib/libwebviewchromium_plat_support.so:system/lib/libwebviewchromium_plat_support.so
+	
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1280
 TARGET_SCREEN_WIDTH := 720
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 
-# inherit 6589 platform
-#$(call inherit-product, device/mediatek/mt6589/device.mk)
-#$(call inherit-product-if-exists, vendor/huawei/libs/$(MTK_TARGET_PROJECT)/device-vendor.mk)
