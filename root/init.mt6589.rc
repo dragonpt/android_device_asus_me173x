@@ -10,18 +10,17 @@ on boot
     chown root radio /proc/cmdline
 
 on init  
-    mkdir /mnt/media_rw/sdcard0 0700 media_rw media_rw
-    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    export LD_PRELOAD /system/lib/libxlog.so
+    export EXTERNAL_STORAGE /storage/sdcard0
+    export SECONDARY_STORAGE /storage/sdcard1
     mkdir /storage/sdcard0 0700 root root
     mkdir /storage/sdcard1 0700 root root
 
-    symlink /storage/sdcard0 /mnt/emmc
-    symlink /storage/sdcard0 /emmc
-    symlink /storage/sdcard1 /sdcard
-    symlink /storage/sdcard1 /mnt/sdcard
+    symlink /storage/sdcard0 /sdcard
+    symlink /storage/sdcard0 /mnt/sdcard
 
-    export EXTERNAL_STORAGE /storage/sdcard0
-    export SECONDARY_STORAGE /storage/sdcard1
+    mkdir /mnt/media_rw/sdcard0 0700 media_rw media_rw
+    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
 
     mkdir /storage/usbdisk0 0700 root root
     mkdir /mnt/media_rw/usbdisk0 0700 media_rw media_rw
@@ -47,6 +46,7 @@ on fs
     chown system system /protect_s
     chmod 0771 /protect_f
     chmod 0771 /protect_s
+#    setprop ro.crypto.fuse_sdcard true
 
     # SGX
     insmod /system/lib/modules/pvrsrvkm.ko
