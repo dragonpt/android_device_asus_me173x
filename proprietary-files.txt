@@ -54,7 +54,7 @@ etc/audio_policy.conf
 etc/.tp/thermal.off.conf
 etc/.tp/thermal.conf
 etc/.tp/.ht120.mtc
-# bin/drvbd
+bin/drvbd
 bin/6620_launcher
 bin/akmd8963
 bin/akmd8975
@@ -64,6 +64,7 @@ bin/ccci_fsd
 bin/ccci_mdinit
 bin/geomagneticd
 bin/hald
+bin/hostapd
 bin/memsicd
 bin/msensord
 bin/mtk_agpsd
@@ -80,6 +81,7 @@ bin/stp_dump3
 bin/thermal
 bin/thermal_manager
 bin/wlan_loader
+bin/wpa_supplicant
 lib/libcam.paramsmgr.so
 # lib/libcam_mmp.so
 lib/libion.so
@@ -131,6 +133,7 @@ lib/libaudio.a2dp.default.so
 lib/libdpframework_plat.so
 lib/libdrmmtkplugin.so
 lib/libdrmmtkutil.so
+lib/libdrmmtkwhitelist.so
 lib/libcamdrv.so
 lib/libaudiosetting.so
 lib/libbessound_hd_mtk.so
@@ -142,12 +145,14 @@ lib/libcvsd_mtk.so
 lib/libfile_op.so
 lib/libcam.camshot.so
 lib/libm4u.so
+lib/libwpa_client.so
 lib/hw/hwcomposer.mt6589.so
 lib/hw/gps.default.so
 lib/hw/audio.primary.default.so
 lib/hw/libaudio.r_submix.default.so
 lib/hw/libaudio.usb.default.so
 lib/hw/audio_policy.stub.so
+lib/hw/bluetooth.default.so
 lib/hw/lights.default.so
 lib/hw/power.default.so
 lib/hw/local_time.default.so
