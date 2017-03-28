@@ -61,7 +61,7 @@ TARGET_POWERHAL_VARIANT := cm
 TARGET_NO_BOOTLOADER := true
 
 # EGL settings
-BOARD_EGL_CFG := device/huawei/g700/egl.cfg
+BOARD_EGL_CFG := device/huawei/g700/configs/egl.cfg
 USE_OPENGL_RENDERER := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
 
@@ -98,9 +98,9 @@ BOARD_WLAN_DEVICE := mediatek
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_mt66xx
 BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_mt66xx
 WIFI_DRIVER_FW_PATH_PARAM:="/dev/wmtWifi"
-WIFI_DRIVER_FW_PATH_STA:=STA
-WIFI_DRIVER_FW_PATH_AP:=AP
-WIFI_DRIVER_FW_PATH_P2P:=P2P
+WIFI_DRIVER_FW_PATH_STA:="STA"
+WIFI_DRIVER_FW_PATH_AP:="AP"
+WIFI_DRIVER_FW_PATH_P2P:="STA+P2P"
 
 # telephony
 BOARD_RIL_CLASS := ../../../device/huawei/g700/ril/
@@ -124,6 +124,8 @@ BOARD_SEPOLICY_UNION += \
     pvrsrvctl.te \
     surfaceflinger.te \
     system.te
+    
+PRODUCT_PREBUILT_WEBVIEWCHROMIUM := no
 
 DEVICE_RESOLUTION := 720x1280
 
