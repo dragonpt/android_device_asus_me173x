@@ -139,6 +139,7 @@ lib/libaudiosetting.so
 lib/libbessound_hd_mtk.so
 lib/libimageio.so
 lib/libmatv_cust.so
+lib/libmnl.so
 lib/libmtkshifter.so
 lib/libaed.so
 lib/libcvsd_mtk.so
