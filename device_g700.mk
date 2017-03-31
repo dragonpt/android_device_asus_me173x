@@ -163,6 +163,7 @@ PRODUCT_PACKAGES += \
 	$(LOCAL_PATH)/prebuilt/chromium/lib/libwebviewchromium.so:system/lib/libwebviewchromium.so \
 	$(LOCAL_PATH)/prebuilt/chromium/lib/libwebviewchromium_loader.so:system/lib/libwebviewchromium_loader.so \
 	$(LOCAL_PATH)/prebuilt/chromium/lib/libwebviewchromium_plat_support.so:system/lib/libwebviewchromium_plat_support.so
+endif
 	
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1280
