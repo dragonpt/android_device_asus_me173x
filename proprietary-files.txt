@@ -111,6 +111,10 @@ lib/libhwm.so
 lib/libkeystore_client.so
 # lib/libcam_platform.so
 lib/libfeatureio.so
+lib/libfmcust.so
+lib/libfmjni.so
+lib/libfmmt6628.so
+lib/libmtkplayer.so
 lib/libmtklimiter.so
 # lib/libcam_utils.so
 lib/libbessound_mtk.so
