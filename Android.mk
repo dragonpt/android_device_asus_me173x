@@ -20,8 +20,8 @@
 # to only building on ARM if they include assembly. Individual makefiles
 # are responsible for having their own logic, for fine-grained control.
 
-#LOCAL_PATH := $(call my-dir)
+LOCAL_PATH := $(call my-dir)
 
-#ifeq ($(TARGET_DEVICE),g700)
-#include $(call all-makefiles-under,$(LOCAL_PATH))
-#endif
+ifeq ($(TARGET_DEVICE),g700)
+include $(call all-makefiles-under,$(LOCAL_PATH))
+endif

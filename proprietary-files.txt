@@ -50,10 +50,6 @@ etc/throttle.sh
 etc/mtk_omx_core.cfg
 etc/audio_effects.conf
 etc/gps.conf
-etc/audio_policy.conf
-etc/.tp/thermal.off.conf
-etc/.tp/thermal.conf
-etc/.tp/.ht120.mtc
 bin/drvbd
 bin/6620_launcher
 bin/akmd8963
