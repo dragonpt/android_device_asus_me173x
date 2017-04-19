@@ -60,6 +60,9 @@ TARGET_POWERHAL_VARIANT := cm
 # boot
 TARGET_NO_BOOTLOADER := true
 
+# Offline charging
+ADDITIONAL_DEFAULT_PROPERTIES += ro.mount.fs=EXT4
+
 # EGL settings
 BOARD_EGL_CFG := device/huawei/g700/configs/egl.cfg
 USE_OPENGL_RENDERER := true
@@ -98,9 +101,9 @@ BOARD_WLAN_DEVICE := mediatek
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_mt66xx
 BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_mt66xx
 WIFI_DRIVER_FW_PATH_PARAM:="/dev/wmtWifi"
-WIFI_DRIVER_FW_PATH_STA:="STA"
-WIFI_DRIVER_FW_PATH_AP:="AP"
-WIFI_DRIVER_FW_PATH_P2P:="STA+P2P"
+WIFI_DRIVER_FW_PATH_STA:=STA
+WIFI_DRIVER_FW_PATH_AP:=AP
+WIFI_DRIVER_FW_PATH_P2P:=P2P
 
 # telephony
 BOARD_RIL_CLASS := ../../../device/huawei/g700/ril/
