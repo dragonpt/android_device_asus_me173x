@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#include device/huawei/$(MTK_TARGET_PROJECT)/ProjectConfig.mk
+# The gps config appropriate for this device
+$(call inherit-product, device/common/gps/gps_us_supl.mk)
+
 $(call inherit-product-if-exists, vendor/huawei/g700/g700-vendor.mk)
+
+LOCAL_PATH := device/huawei/g700
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay/
 
@@ -73,7 +77,18 @@ PRODUCT_PACKAGES += \
 	audio.a2dp.default \
         audio.usb.default \
         audio_policy.default
-      
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf
+    
+# FM Radio
+PRODUCT_PACKAGES += \
+    FMRadio \
+    libfmjni \
+    libfmmt6628 \
+    libfmcust \
+    libmtkplayer
+    
 PRODUCT_COPY_FILES += \
         frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
         frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
@@ -83,8 +98,12 @@ PRODUCT_COPY_FILES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
+    libwpa_client \
+    hostapd \
     dhcpcd.conf \
+    wpa_supplicant \
     wpa_supplicant.conf
+   
     
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/hostapd/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
@@ -157,7 +176,7 @@ PRODUCT_PACKAGES += \
 
 ifeq ($(PRODUCT_PREBUILT_WEBVIEWCHROMIUM),yes)
 
-PRODUCT_PACKAGES += \
+PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/prebuilt/chromium/app/webview/webview.apk:system/app/webview/webview.apk \
 	$(LOCAL_PATH)/prebuilt/chromium/app/webview/lib/arm/libwebviewchromium.so:system/app/webview/lib/arm/libwebviewchromium.so \
 	$(LOCAL_PATH)/prebuilt/chromium/lib/libwebviewchromium.so:system/lib/libwebviewchromium.so \
@@ -168,6 +187,10 @@ endif
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1280
 TARGET_SCREEN_WIDTH := 720
+
+# AAPT
+PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 
