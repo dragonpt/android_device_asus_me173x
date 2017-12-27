@@ -127,9 +127,18 @@
     <integer name="config_screenBrightnessSettingDefault">70</integer>
     
     <bool name="config_user_notification_of_restrictied_mobile_access">false</bool>
-    <color name="config_defaultNotificationColor">#ffffff00</color>
+    <color name="config_defaultNotificationColor">#ff00ff00</color>
     <bool name="config_multiColorNotificationLed">true</bool>   
     <!-- Performance profiles -->
     <string name="config_perf_profile_prop">sys.perf.profile</string>
     <string name="config_perf_profile_default_entry">1</string>
+ 
+ <add-resource type="string" name="com.google.android.webview"></add-resource>
+   
+    <!-- Package name providing default WebView implementation. -->
+    <string name="com.google.android.webview" translatable="false">com.android.webview</string>
+
+    <!-- Package name providing alternate WebView implementation.
+         Fall back to config_webViewPackageName if not available. -->
+    <string name="config_alternateWebViewPackageName" translatable="false">com.google.android.webview</string>
 </resources>

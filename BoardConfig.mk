@@ -1,4 +1,4 @@
-# Copyright (C) 2013 The CyanogenMod Project
+# Copyright (C) 2017 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ COMMON_GLOBAL_CPPFLAGS += -DMTK_G_MT6589 -DMTK_HARDWARE
 BOARD_HAS_MTK_HARDWARE := true
 MTK_HARDWARE := true
 
-
 # BT
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_MTK := true
@@ -59,6 +58,8 @@ TARGET_POWERHAL_VARIANT := cm
 
 # boot
 TARGET_NO_BOOTLOADER := true
+BOARD_MKBOOTIMG_ARGS := --board 1336460062
+BOARD_CUSTOM_BOOTIMG := true
 
 # Offline charging
 ADDITIONAL_DEFAULT_PROPERTIES += ro.mount.fs=EXT4
@@ -75,7 +76,8 @@ TARGET_PREBUILT_KERNEL := $(DEVICE_FOLDER)/prebuilt/kernel
 BOARD_BOOTIMAGE_PARTITION_SIZE := 6291456
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1611661312
 BOARD_USERDATAIMAGE_PARTITION_SIZE:= 4830789632
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 9291456
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16777216
+#BOARD_RECOVERYIMAGE_PARTITION_SIZE := 6291456
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_FLASH_BLOCK_SIZE := 512
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -91,7 +93,8 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 # mkimage to append headers
 TARGET_MKIMAGE := device/huawei/g700/mkimage
 TARGET_USE_BUILT_BOOTIMAGE := true
-TARGET_USE_BUILT_RECOVERYIMAGE := true
+#TARGET_USE_BUILT_RECOVERYIMAGE := true
+BOARD_CUSTOM_BOOTIMG_MK := device/huawei/g700/boot.mk
 
 # wifi
 WPA_SUPPLICANT_VERSION := VER_0_8_X
@@ -108,7 +111,6 @@ WIFI_DRIVER_FW_PATH_P2P:=P2P
 # telephony
 BOARD_RIL_CLASS := ../../../device/huawei/g700/ril/
 
-#nvram permission fix
 TARGET_SPECIFIC_HEADER_PATH := device/huawei/g700/include
 
 # allow more than one lun file
@@ -127,8 +129,6 @@ BOARD_SEPOLICY_UNION += \
     pvrsrvctl.te \
     surfaceflinger.te \
     system.te
-    
-PRODUCT_PREBUILT_WEBVIEWCHROMIUM := no
 
 DEVICE_RESOLUTION := 720x1280
 
@@ -146,3 +146,5 @@ TW_INTERNAL_STORAGE_PATH := "/sdcard"
 TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 TW_EXTERNAL_STORAGE_PATH := "/external_sdcard"
 TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sdcard"
+TARGET_RECOVERY_FSTAB := $(DEVICE_FOLDER)/root/recovery.fstab
+
