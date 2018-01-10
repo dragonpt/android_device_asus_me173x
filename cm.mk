@@ -1,4 +1,4 @@
-# Copyright (C) 2013 The CyanogenMod Project
+# Copyright (C) 2017 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ TARGET_SCREEN_WIDTH := 720
 
 PRODUCT_NAME := cm_g700
 PRODUCT_DEVICE := g700
-PRODUCT_MODEL := Ascend G700
+PRODUCT_MODEL := g700
 PRODUCT_RELEASE_NAME := g700
-PRODUCT_BRAND := huawei
-PRODUCT_MANUFACTURER := huawei
+PRODUCT_BRAND := Huawei
+PRODUCT_MANUFACTURER := Huawei
