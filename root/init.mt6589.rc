@@ -11,19 +11,15 @@ on boot
 
 on init  
     export LD_PRELOAD /system/lib/libxlog.so
-    export EXTERNAL_STORAGE /storage/sdcard0
-    export SECONDARY_STORAGE /storage/sdcard1
-    mkdir /storage/sdcard0 0700 root root
-    mkdir /storage/sdcard1 0700 root root
 
-    symlink /storage/sdcard0 /sdcard
-    symlink /storage/sdcard0 /mnt/sdcard
-
-    mkdir /mnt/media_rw/sdcard0 0700 media_rw media_rw
+    mkdir /mnt/shell/emulated 0700 shell shell
+    mkdir /storage/emulated 0555 root root
     mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
-
-    mkdir /storage/usbdisk0 0700 root root
-    mkdir /mnt/media_rw/usbdisk0 0700 media_rw media_rw
+    mkdir /storage/sdcard1 0700 root root
+    export EXTERNAL_STORAGE /storage/emulated/legacy
+    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
+    export EMULATED_STORAGE_TARGET /storage/emulated
+    export SECONDARY_STORAGE /storage/sdcard1
 
     mkdir /cache 0771 system cache
 
@@ -46,7 +42,7 @@ on fs
     chown system system /protect_s
     chmod 0771 /protect_f
     chmod 0771 /protect_s
-#    setprop ro.crypto.fuse_sdcard true
+    setprop ro.crypto.fuse_sdcard true
 
     # SGX
     insmod /system/lib/modules/pvrsrvkm.ko
@@ -75,6 +71,10 @@ on post-fs-data
  
     mkdir /data/nvram 0770 root nvram
 
+    #give system access to rfkill device node
+    chmod 0660 /dev/rfkill
+
+    mkdir /data/drm/wv 0770 drm system
     # radvd
     mkdir /data/misc/radvd 0770 system system
     chmod 444 /etc/radvd/radvd.conf
@@ -118,15 +118,15 @@ on post-fs-data
     #chown system media /dev/M4U_device
 
     # Sensor
-    chmod 0660 /dev/hwmsensor
-    chmod 0660 /dev/msensor
-    chmod 0660 /dev/gsensor
-    chmod 0660 /dev/als_ps
-    chmod 0660 /dev/gyroscope
+    chmod 0666 /dev/hwmsensor
+    chmod 0666 /dev/msensor
+    chmod 0666 /dev/gsensor
+    chmod 0666 /dev/als_ps
+    chmod 0666 /dev/gyroscope
 
-    chmod 0660 /sys/devices/platform/msensor/driver/cpsopmode
-    chmod 0660 /sys/devices/platform/msensor/driver/cpsreptxy
-    chmod 0660 /sys/devices/platform/msensor/driver/cpsreptz
+    chmod 0666 /sys/devices/platform/msensor/driver/cpsopmode
+    chmod 0666 /sys/devices/platform/msensor/driver/cpsreptxy
+    chmod 0666 /sys/devices/platform/msensor/driver/cpsreptz
 
     # GesturePorting Jiangde++, for gsensor no early suspend
     # chmod 0777  /sys/devices/platform/gsensor/driver/noearly
@@ -150,8 +150,8 @@ on post-fs-data
     chown radio radio /sys/devices/platform/mtk-kpd/driver/kpd_call_state
 
     mkdir /data/amit/ 0770 system system
-    mkdir /data/misc/sensors 0664 system system
-    mkdir /data/misc/akmd 0664 system system
+    mkdir /data/misc/sensors 0774 system system
+    mkdir /data/misc/akmd 0770 system system
     chown system /sys/class/input/input5/enable
     chown system /sys/class/input/input5/delay
     chown system /sys/class/input/input5/wake
@@ -407,7 +407,7 @@ service stp_dump /system/bin/stp_dump3
     group system net_admin
     class main
     
-service 662x_launcher /system/bin/logwrapper /system/bin/6620_launcher -b 4000000 -p /system/etc/firmware/ -d /dev/ttyMT2
+service 662x_launcher /system/bin/6620_launcher -b 4000000 -p /system/etc/firmware/ -d /dev/ttyMT2
     user system
     group system
     class core
@@ -440,9 +440,20 @@ service mtkGD /system/bin/mtkGD
     user system
     group system
 
-service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
-    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -N \
-	-ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -puse_p2p_group_interface=1 -ddd
+on property:wlan.driver.status=ok
+	write /dev/wmtWifi "1"
+
+on property:wlan.driver.status=unloaded
+	write /dev/wmtWifi "0"
+
+service p2p_supplicant /system/bin/wpa_supplicant -dd \
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
+    -I/system/etc/wifi/wpa_supplicant_overlay.conf \
+    -O/data/misc/wifi/sockets -N \
+    -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
+    -I/system/etc/wifi/p2p_supplicant_overlay.conf \
+    -puse_p2p_group_interface=1 -e/data/misc/wifi/entropy.bin \
+    -g@android:wpa_wlan0
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
     #   user wifi
@@ -452,12 +463,11 @@ service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
     disabled
     oneshot
 
-service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
+service wpa_supplicant /system/bin/wpa_supplicant -dd \
 	-iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
 	-I/system/etc/wifi/wpa_supplicant_overlay.conf \
 	-O/data/misc/wifi/sockets \
-	-e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0 \
-	-ddd
+    -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
     #   user wifi
@@ -468,7 +478,7 @@ service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
     oneshot
 
 service ap_daemon /system/bin/wpa_supplicant \
-	-iap0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -puse_p2p_group_interface=1 -ddd
+	-iap0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -puse_p2p_group_interface=1 -dd
 	#   we will start as root and wpa_supplicant will switch to user wifi
 	#   after setting up the capabilities required for WEXT
 	#   user wifi
@@ -478,80 +488,81 @@ service ap_daemon /system/bin/wpa_supplicant \
     oneshot
 
 
-service dhcpcd_wlan0 /system/bin/logwrapper /system/bin/dhcpcd -A -BK -dd
+service dhcpcd_bt-pan /system/bin/dhcpcd -A -BK -dd
     class main
+    user dhcp
+    group net_admin net_raw
     disabled
     oneshot
 
-service dhcpcd_p2p /system/bin/logwrapper /system/bin/dhcpcd -A -BK -dd
-    class main
+
+service dhcpcd_wlan0 /system/bin/dhcpcd -aABDKL
+    class late_start
     disabled
     oneshot
 
-service iprenew_wlan0 /system/bin/logwrapper /system/bin/dhcpcd -n
-    class main
+service dhcpcd_p2p /system/bin/dhcpcd -aABKL
+    class late_start
     disabled
     oneshot
 
-service iprenew_p2p /system/bin/logwrapper /system/bin/dhcpcd -n
-    class main
-    disabled
-    oneshot
-
-service dhcp6cDNS_wlan0 /system/bin/dhcp6c -c "/etc/wide-dhcpv6/dhcp6cDNS.conf" -Df wlan0
+service iprenew_wlan0 /system/bin/dhcpcd -n
+    class late_start
 	disabled
 	oneshot
 
-service dhcp6c_wlan0 /system/bin/dhcp6c -c "/etc/wide-dhcpv6/dhcp6c.conf" -Df wlan0
+service iprenew_p2p /system/bin/dhcpcd -n
+    class late_start
     disabled
     oneshot
-on property:service.dhcp6c_wlan0.enable=0
-    stop dhcp6c_wlan0
 
-on property:service.dhcp6c_wlan0.enable=1
-    start dhcp6c_wlan0
 
 # sensor services
 service msensord /system/bin/msensord
     class main
     oneshot
 
-service ami304d /system/bin/logwrapper /system/bin/ami304d
+service ami304d /system/bin/ami304d
     user system
     group system
     disabled
-    oneshot
+    class main
 
 service memsicd /system/bin/memsicd
     disabled
-    oneshot
     user system
     group system
+    class main
 
 service akmd8975 /system/bin/akmd8975
     disabled
     user system
     group system
+    class main
 
 service akmd8963 /system/bin/akmd8963
     disabled
     user system
     group system
+    class main
 
 service bmm050d /system/bin/bmm050d
     disabled
     user system
     group system
+    class main
 
 service orientationd /system/bin/orientationd
     disabled
     user system
     group system input
+    class main
 
 service geomagneticd /system/bin/geomagneticd
     disabled
     user system
     group system input
+    class main
 
 service drvbd /system/bin/drvbd
     class main
@@ -585,14 +596,8 @@ service mnld /system/xbin/mnld
     oneshot
 
 # virtual sdcard daemon running as media_rw (1023)
-service fuse_sdcard0 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard0 /storage/sdcard0
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
     class late_start
-    disabled
-
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard1 /storage/sdcard1
-    class late_start
-    disabled
-
-service fuse_usbdisk0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk0 /storage/usbdisk0
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
     class late_start
     disabled
