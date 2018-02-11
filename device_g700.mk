@@ -55,8 +55,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.adb.secure=0
 
 PRODUCT_PROPERTY_OVERRIDES := \
-        service.adb.root=1 \
-        persist.sys.root_access=1 \
+    service.adb.root=1 \
+    persist.sys.root_access=1 \
 	fmradio.driver.chip=3 \
 	gps.solution.combo.chip=1 \
 	mediatek.wlan.chip=MT6628 \
@@ -67,7 +67,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
 	persist.radio.fd.off.counter=5 \
 	persist.radio.fd.off.r8.counter=5 \
 	persist.radio.fd.r8.counter=15 \
-        persist.radio.multisim.config=dsds \
+    persist.radio.multisim.config=dsds \
 	persist.sys.usb.config=adb \
 	ril.current.share_modem=2 \
 	ril.external.md=0 \
@@ -89,7 +89,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
 	ro.opengles.version=131072 \
 	ro.sf.lcd_density=320 \
 	ro.telephony.ril_class=MediaTekRIL \
-        ro.telephony.ril.config=fakeiccid \
+    ro.telephony.ril.config=fakeiccid \
 	wifi.direct.interface=p2p0 \
 	wifi.interface=wlan0 \
 	wifi.tethering.interface=ap0
@@ -101,10 +101,12 @@ PRODUCT_PACKAGES += \
 
 # audio
 PRODUCT_PACKAGES += \
-	audio.r_submix.default \
-	audio.a2dp.default \
-        audio.usb.default \
-        audio_policy.default
+    audio.primary.mt6589 \
+    audio.r_submix.default \
+    audio.a2dp.default \
+    audio.usb.default \
+    audio_policy.default \
+    libblisrc
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf
@@ -116,6 +118,13 @@ PRODUCT_PACKAGES += \
     libfmmt6628 \
     libfmcust \
     libmtkplayer
+
+# Media
+PRODUCT_PACKAGES += \
+    qcmediaplayer
+
+PRODUCT_BOOT_JARS += \
+    qcmediaplayer
     
 PRODUCT_COPY_FILES += \
         frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
@@ -193,6 +202,17 @@ PRODUCT_COPY_FILES += \
 
 # Torch    
 PRODUCT_PACKAGES += Torch
+
+# Charger
+PRODUCT_PACKAGES += \
+    libhealthd.mtk \
+    charger \
+    charger_res_images \
+    libnl_2 \
+    libtinyxml
+    
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.media.use-awesome=true
 
 # GPU
 PRODUCT_PACKAGES += \
