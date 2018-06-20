@@ -5,6 +5,14 @@ import init.protect.rc
 on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug
 
+on charger
+    mount ext4 /emmc@android /system ro wait
+    start battery_charger
+    start servicemanager
+
+    # disable USB
+    write /sys/devices/platform/mt_usb/cmode 0
+
 on boot
     start drvbd
     chown root radio /proc/cmdline
@@ -20,6 +28,13 @@ on init
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
     export EMULATED_STORAGE_TARGET /storage/emulated
     export SECONDARY_STORAGE /storage/sdcard1
+
+    # Support legacy paths
+    symlink /storage/emulated/legacy /sdcard
+    symlink /storage/emulated/legacy /mnt/sdcard
+    symlink /storage/emulated/legacy /storage/sdcard0
+    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+    symlink /mnt/shell/emulated/0 /storage/emulated/0
 
     mkdir /cache 0771 system cache
 
@@ -60,6 +75,10 @@ on fs
 on post-fs-data
     setprop vold.post_fs_data_done 1
 
+    # we will remap this as /mnt/sdcard with the sdcard fuse tool
+    mkdir /data/media 0775 media_rw media_rw
+    chown media_rw media_rw /data/media
+    
     # create dalvik-cache and double-check the perms, so as to enforce our permissions
     mkdir /data/dalvik-cache 0771 system system
     chown system system /data/dalvik-cache
@@ -272,12 +291,14 @@ on post-fs-data
     mkdir /data/misc/wifi 0770 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/wpa_supplicant 0770 wifi wifi
-    mkdir /data/misc/dhcp 0770 dhcp dhcp
-    chown dhcp dhcp /data/misc/dhcp
+    mkdir /data/misc/dhcp 0770 dhcp wifi
+    chown dhcp wifi /data/misc/dhcp
     chown wifi wifi /data/misc/wifi
 
     # bluetooth
     mkdir /data/@btmtk 0770 bluetooth net_bt
+    chown bluetooth bluetooth /data/@btmtk/host_cache
+    chown bluetooth bluetooth /data/@btmtk/dev_cache
     chown bluetooth bluetooth /dev/hid-keyboard
     chmod 0660 /dev/hid-keyboard
     chown bluetooth bluetooth /dev/btn
@@ -387,6 +408,12 @@ on post-fs-data
     chown system system /proc/wmt_tm/wmt_val
     chown system system /proc/wmt_tm/wfd_stat
 
+service battery_charger /charger
+    class charger
+
+    seclabel u:r:healthd:s0
+
+
 # SGX init
 service pvrsrvctl /system/bin/pvrsrvctl --start
     class main
@@ -395,12 +422,14 @@ service pvrsrvctl /system/bin/pvrsrvctl --start
     oneshot
     disabled
 
+# Remove hald: updated wifi driver from kk kernel don't need of hald
+# and also fix wifi hotspot 
 # Connectivity related services
-service hald /system/bin/hald
-    class main
-    socket hald stream 0660 root system
-    user system
-    group system radio mount wifi inet net_admin
+#service hald /system/bin/hald
+#    class main
+#    socket hald stream 0660 root system
+#    user system
+#    group system radio mount wifi inet net_admin
 
 service stp_dump /system/bin/stp_dump3
     user system
