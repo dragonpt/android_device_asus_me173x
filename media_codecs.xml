@@ -79,22 +79,28 @@ Only the three quirks included above are recognized at this point:
 <MediaCodecs>
     <Include href="media_codecs_google_audio.xml" />
     <Include href="media_codecs_google_telephony.xml" />
-	
     <Decoders>
-        <!-- DOLBY_UDC -->
-        <MediaCodec name="OMX.dolby.ac3.decoder" >
-            <Type name="audio/ac3" />
-            <Quirk name="needs-flush-before-disable" />
-            <Quirk name="requires-flush-complete-emulation" />
+    
+        <!-- ffmpeg video codecs                 -->
+        <MediaCodec name="OMX.google.vp8.decoder" type="video/x-vnd.on2.vp8">
+            <Limit name="size" min="2x2" max="1920x1088" />
+            <Limit name="alignment" value="2x2" />
+            <Limit name="block-size" value="16x16" />
+            <Limit name="block-count" range="1-8160" />
+            <Limit name="blocks-per-second" range="1-500000" />
+            <Limit name="bitrate" range="1-40000000" />
+            <Feature name="adaptive-playback" />
         </MediaCodec>
-        <MediaCodec name="OMX.dolby.ec3.decoder" >
-            <Type name="audio/eac3" />
-            <Quirk name="needs-flush-before-disable" />
-            <Quirk name="requires-flush-complete-emulation" />
+        <MediaCodec name="OMX.google.vp9.decoder" type="video/x-vnd.on2.vp9">
+            <Limit name="size" min="2x2" max="1920x1088" />
+            <Limit name="alignment" value="2x2" />
+            <Limit name="block-size" value="16x16" />
+            <Limit name="block-count" range="1-3600" />
+            <Limit name="blocks-per-second" range="1-108000" />
+            <Limit name="bitrate" range="1-5000000" />
+            <Feature name="adaptive-playback" />
         </MediaCodec>
-        <!-- DOLBY_UDC END -->
-
-        <!-- ffmpeg video codecs -->
+        
         <MediaCodec name="OMX.ffmpeg.h263.decoder" type="video/3gpp">
             <Limit name="size" min="2x2" max="352x288" />
             <Limit name="alignment" value="2x2" />
@@ -102,42 +108,38 @@ Only the three quirks included above are recognized at this point:
         </MediaCodec>
 
         <MediaCodec name="OMX.ffmpeg.h264.decoder" type="video/avc">
-            <Limit name="size" min="2x2" max="2048x2048" />
+            <Limit name="size" min="2x2" max="1920x1088" />
             <Limit name="alignment" value="2x2" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
-
+        
         <MediaCodec name="OMX.ffmpeg.hevc.decoder" type="video/hevc">
-            <Limit name="size" min="2x2" max="2048x2048" />
+            <Limit name="size" min="2x2" max="1920x1088" />
             <Limit name="alignment" value="2x2" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
+        
     </Decoders>
 
     <Encoders>
-        <MediaCodec name="OMX.MTK.VIDEO.ENCODER.MPEG4" type="video/mp4v-es" >
-            <Limit name="size" min="64x64" max="640x480" />
+         <MediaCodec name="OMX.MTK.VIDEO.ENCODER.MPEG4" type="video/mp4v-es" >
+            <Limit name="size" min="16x16" max="1920x1088" />
             <Limit name="alignment" value="16x16" />
             <Limit name="block-size" value="16x16" />
-            <Quirk name="requires-allocate-on-input-ports" />
-            <Quirk name="requires-allocate-on-output-ports" />
+            <Quirk name="avoid-memcpy-input-recording-frames" />
         </MediaCodec>
         <MediaCodec name="OMX.MTK.VIDEO.ENCODER.H263" type="video/3gpp" >
-            <Limit name="size" min="64x64" max="640x480" />
             <Limit name="alignment" value="16x16" />
             <Limit name="block-size" value="16x16" />
-             <Quirk name="requires-allocate-on-input-ports" />
-            <Quirk name="requires-allocate-on-output-ports" />
+            <Quirk name="avoid-memcpy-input-recording-frames" />
         </MediaCodec>
         <MediaCodec name="OMX.MTK.VIDEO.ENCODER.AVC" type="video/avc" >
-            <Limit name="size" min="128x96" max="1920x1080" />
+            <Limit name="size" min="128x96" max="1920x1088" />
             <Limit name="alignment" value="16x16" />
             <Limit name="block-size" value="16x16" />
-            <Quirk name="requires-allocate-on-input-ports" />
-            <Quirk name="requires-allocate-on-output-ports" />
+            <Quirk name="avoid-memcpy-input-recording-frames" />
         </MediaCodec>
     </Encoders>
-
-    <Include href="media_codecs_google_video.xml" />
-    <Include href="media_codecs_ffmpeg.xml" />
+     <Include href="media_codecs_ffmpeg.xml" />
+     <Include href="media_codecs_google_video.xml" />
 </MediaCodecs>
