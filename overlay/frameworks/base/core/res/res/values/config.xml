@@ -44,7 +44,10 @@
 
     <!-- Default color for notification LED is green. -->
     <color name="config_defaultNotificationColor">#ff00ff00</color>
-    <bool name="config_multiColorNotificationLed">true</bool>  
+    <bool name="config_multiColorNotificationLed">true</bool>
+  
+    <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
+    <bool name="config_intrusiveNotificationLed">true</bool>
 
     <bool name="config_automatic_brightness_available">true</bool>
 
