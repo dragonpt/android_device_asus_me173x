@@ -101,12 +101,30 @@ PRODUCT_PACKAGES += \
 
 # audio
 PRODUCT_PACKAGES += \
+    libaudio.primary.default \
+    audio_policy.mt6589 \
     audio.primary.mt6589 \
     audio.r_submix.default \
     audio.a2dp.default \
     audio.usb.default \
     audio_policy.default \
-    libblisrc
+    audio_policy.stub \
+    libblisrc \
+    libdpframework \
+    libaudiosetting \
+    libvcodecdrv \
+    libstagefright_memutil \
+    libcustom_prop \
+    libnvram \
+    libaudiocustparam \
+    libaudiocompensationfilter \
+    libcvsd_mtk \
+    libmsbc_mtk \
+    libaed \
+    libaudiocomponentengine \
+    libaudiodcrflt \
+    libbluetoothdrv \
+    libspeech_enh_lib 
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf
@@ -120,12 +138,7 @@ PRODUCT_PACKAGES += \
     libmtkplayer
 
 # Media
-PRODUCT_PACKAGES += \
-    qcmediaplayer
-
-PRODUCT_BOOT_JARS += \
-    qcmediaplayer
-    
+   
 PRODUCT_COPY_FILES += \
         frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
         frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
