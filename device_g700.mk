@@ -49,10 +49,14 @@ PRODUCT_COPY_FILES += \
 	$(MOD_SRC)/wlan_mt6628.ko:$(MOD_TGT)/wlan_mt6628.ko
 
 # Set default USB interface
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp \
-    ro.secure=0
-    ro.adb.secure=0
+PRODUCT_PROPERTY_OVERRIDES += \
+        persist.sys.usb.config=mtp,adb \
+        ro.allow.mock.location=0 \
+        ro.debuggable=1 \
+        persist.service.adb.enable=1 \
+        persist.service.debuggable=1 \
+        ro.secure=0 \
+        ro.adb.secure=0
 
 PRODUCT_PROPERTY_OVERRIDES := \
     service.adb.root=1 \
@@ -67,8 +71,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
 	persist.radio.fd.off.counter=5 \
 	persist.radio.fd.off.r8.counter=5 \
 	persist.radio.fd.r8.counter=15 \
-    persist.radio.multisim.config=dsds \
-	persist.sys.usb.config=adb \
+        persist.radio.multisim.config=dsds \
 	ril.current.share_modem=2 \
 	ril.external.md=0 \
 	ril.first.md=1 \
@@ -131,7 +134,7 @@ PRODUCT_COPY_FILES += \
     
 # FM Radio
 PRODUCT_PACKAGES += \
-    FMRadio \
+    FmRadio \
     libfmjni \
     libfmmt6628 \
     libfmcust \
