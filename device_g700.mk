@@ -134,7 +134,7 @@ PRODUCT_COPY_FILES += \
     
 # FM Radio
 PRODUCT_PACKAGES += \
-    FmRadio \
+    FMRadio \
     libfmjni \
     libfmmt6628 \
     libfmcust \
