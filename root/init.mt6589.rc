@@ -4,6 +4,7 @@ import init.protect.rc
 
 on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug
+    setprop ro.mtk.hardware mt6589
 
 on charger
     mount ext4 /emmc@android /system ro wait
@@ -14,7 +15,6 @@ on charger
     write /sys/devices/platform/mt_usb/cmode 0
 
 on boot
-    start drvbd
     chown root radio /proc/cmdline
 
 on init  
@@ -39,7 +39,7 @@ on init
     mkdir /cache 0771 system cache
 
     # Change ION driver permission
-    chmod 0644 /dev/ion
+    chmod 0666 /dev/ion
 
     # Change MMP driver permission
     chmod 0644 /dev/mmp
@@ -385,6 +385,8 @@ on post-fs-data
     chown dhcp dhcp /data/misc/dhcp/dnsmasq.p2p0.leases
 
     chown root radio /proc/cmdline
+    chown system system /sys/devices/system/cpu/cpufreq/hotplug/cpu_num_base
+    chmod 0660 /sys/devices/system/cpu/cpufreq/hotplug/cpu_num_base
 
     ## Thermal
     #change permissions on thermal devices
@@ -407,6 +409,29 @@ on post-fs-data
     chown system system /proc/wmt_tm/tx_thro
     chown system system /proc/wmt_tm/wmt_val
     chown system system /proc/wmt_tm/wfd_stat
+
+##Netlog tool
+   #change permissions about terminal
+    chown root radio /proc/net/vlan/config
+    chmod 0640 /proc/net/vlan/config
+    chown root radio /proc/net/ip6_tables_matches
+    chown root radio /proc/net/ip6_tables_names
+    chown root radio /proc/net/ip6_tables_targets
+    chown root radio /proc/net/arp_tables_targets
+    chown root radio /proc/net/arp_tables_matches
+    chown root radio /proc/net/arp_tables_names
+    chown root radio /proc/net/ip_tables_targets
+    chown root radio /proc/net/ip_tables_matches
+    chown root radio /proc/net/ip_tables_names
+    chown root radio /proc/net/ip_conntrack_expect
+    chown root radio /proc/net/ip_conntrack
+    chown root radio /proc/net/nf_conntrack
+    chown root radio /proc/net/nf_conntrack_expect
+    chown root radio /proc/net/netfilter/nfnetlink_log
+    chown root radio /proc/net/netfilter/nfnetlink_queue
+
+    chown radio system /proc/cpufreq/cpufreq_cur_freq
+    chown radio system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
 service battery_charger /charger
     class charger
@@ -630,3 +655,32 @@ service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emul
 service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
     class late_start
     disabled
+# CM Performance Profiles
+
+# Powersave
+on property:sys.perf.profile=0
+    write /sys/devices/system/cpu/cpu1/online "1"
+    write /sys/devices/system/cpu/cpu2/online "0"
+    write /sys/devices/system/cpu/cpu3/online "0"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq "497250"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq "497250"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "powersave"
+
+# Balanced
+on property:sys.perf.profile=1
+    write /sys/devices/system/cpu/cpu1/online "1"
+    write /sys/devices/system/cpu/cpu2/online "1"
+    write /sys/devices/system/cpu/cpu3/online "1"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq "1209000"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq "497250"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "hotplug"
+
+# Performance
+on property:sys.perf.profile=2
+    write /sys/devices/system/cpu/cpu1/online "1"
+    write /sys/devices/system/cpu/cpu2/online "1"
+    write /sys/devices/system/cpu/cpu3/online "1"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq "1209000"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq "497250"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "performance"
+
