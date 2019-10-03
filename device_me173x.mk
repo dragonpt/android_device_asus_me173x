@@ -21,7 +21,8 @@ LOCAL_PATH := device/asus/me173x
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay/
 
-# prebuilt kernel modules
+# Kernel
+# atm prebuilt TODO inline compile
 MOD_TGT := /system/lib/modules
 MOD_SRC := $(LOCAL_PATH)/prebuilt/modules
 
@@ -54,47 +55,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_PROPERTY_OVERRIDES := \
     service.adb.root=1 \
-    persist.sys.root_access=1 \
-	fmradio.driver.chip=3 \
-	gps.solution.combo.chip=1 \
-	mediatek.wlan.chip=MT6628 \
-	mediatek.wlan.ctia=0 \
-	mediatek.wlan.module.postfix=_mt6628 \
-	persist.mtk.wcn.combo.chipid=0x6628 \
-	persist.radio.fd.counter=15 \
-	persist.radio.fd.off.counter=5 \
-	persist.radio.fd.off.r8.counter=5 \
-	persist.radio.fd.r8.counter=15 \
-        persist.radio.multisim.config=dsds \
-	ril.current.share_modem=2 \
-	ril.external.md=0 \
-	ril.first.md=1 \
-	ril.flightmode.poweroffMD=1 \
-	ril.radiooff.poweroffMD=0 \
-	ril.specific.sm_cause=0 \
-	ril.telephony.mode=1 \
-	rild.libpath=/system/lib/mtk-ril.so \
-	ro.gemini.smart_3g_switch=1 \
-	ro.mediatek.chip_ver=S01 \
-	ro.mediatek.gemini_support=true \
-	ro.mediatek.platform=MT6589 \
-	ro.mediatek.version.branch=ALPS.JB2.MP \
-	ro.mediatek.version.release=ALPS.JB2.MP.V1.2 \
-	ro.mediatek.version.sdk=1 \
-	ro.mediatek.wlan.p2p=1 \
-	ro.mediatek.wlan.wsc=1 \
-	ro.opengles.version=131072 \
-	ro.sf.lcd_density=320 \
-	ro.telephony.ril_class=MediaTekRIL \
-    ro.telephony.ril.config=fakeiccid \
-	wifi.direct.interface=p2p0 \
-	wifi.interface=wlan0 \
-	wifi.tethering.interface=ap0
+    persist.sys.root_access=1
 
 PRODUCT_TAGS += dalvik.gc.type-precise
-
-PRODUCT_PACKAGES += \
-	gsm0710muxd
 
 # audio
 PRODUCT_PACKAGES += \
@@ -134,7 +97,7 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/media_codecs.xml:system/etc/media_codecs.xml \
 	$(LOCAL_PATH)/media_profiles.xml:system/etc/media_profiles.xml
 
-# Wifi
+# WiFi
 PRODUCT_PACKAGES += \
     libwpa_client \
     hostapd \
@@ -205,11 +168,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.media.use-awesome=true
 
-# GPU
+# GPU PVR
 PRODUCT_PACKAGES += \
     pvrsrvctl
     
-# libcorkscrew is needed for some of the PVR stuff.
+# libcorkscrew
 PRODUCT_PACKAGES += \
 	libcorkscrew
 	
