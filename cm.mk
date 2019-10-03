@@ -14,7 +14,7 @@
 
 # Inherit device configuration
 $(call inherit-product, device/asus/me173x/full_me173x.mk)
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
+$(call inherit-product, vendor/cm/config/common_full_tablet_wifionly.mk)
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1280
