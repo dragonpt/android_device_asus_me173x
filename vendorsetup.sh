@@ -15,6 +15,6 @@
 #
 
 for i in eng userdebug user; do
-    add_lunch_combo full_g700-${i}
-    add_lunch_combo cm_g700-${i}
+    add_lunch_combo full_me173x-${i}
+    add_lunch_combo cm_me173x-${i}
 done
