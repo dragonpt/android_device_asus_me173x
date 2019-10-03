@@ -2,7 +2,6 @@
 # system.prop for Asus me173x
 #
 
-qemu.hw.mainkeys=0
 gps.solution.combo.chip=1
 mediatek.wlan.chip=MT6628
 mediatek.wlan.ctia=0
