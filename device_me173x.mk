@@ -15,9 +15,9 @@
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
-$(call inherit-product-if-exists, vendor/huawei/g700/g700-vendor.mk)
+$(call inherit-product-if-exists, vendor/asus/me173x/me173x-vendor.mk)
 
-LOCAL_PATH := device/huawei/g700
+LOCAL_PATH := device/asus/me173x
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay/
 

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Inherit from those products. Most specific first.
-$(call inherit-product, device/huawei/g700/device_g700.mk)
+$(call inherit-product, device/asus/me173x/device_me173x.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
 # Configure as xhdpi device to prevent breaking without mdpi drawables
@@ -21,7 +21,7 @@ PRODUCT_AAPT_CONFIG := normal mdpi hdpi xhdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 
 # Discard inherited values and use our own instead.
-PRODUCT_NAME := full_g700
-PRODUCT_DEVICE := g700
-PRODUCT_BRAND := huawei
-PRODUCT_MODEL := g700
+PRODUCT_NAME := full_me173x
+PRODUCT_DEVICE := me173x
+PRODUCT_BRAND := asus
+PRODUCT_MODEL := me173x

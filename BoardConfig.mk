@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DEVICE_FOLDER := device/huawei/g700
-TARGET_SPECIFIC_HEADER_PATH := device/huawei/g700/include
--include vendor/huawei/g700/BoardConfigVendor.mk
+DEVICE_FOLDER := device/asus/me173x
+TARGET_SPECIFIC_HEADER_PATH := device/asus/me173x/include
+-include vendor/asus/me173x/BoardConfigVendor.mk
 
 # board
 TARGET_BOARD_PLATFORM := mt6589
@@ -75,7 +75,7 @@ BOARD_USES_ARGB8888_FB := true
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_MTK := true
 BOARD_BLUETOOTH_DOES_NOT_USE_RFKILL := true
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/huawei/g700/bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/asus/me173x/bluetooth
 
 # Healthd & Charging
 HEALTHD_ENABLE_TRICOLOR_LED := true
@@ -102,7 +102,7 @@ BOARD_CUSTOM_BOOTIMG := true
 ADDITIONAL_DEFAULT_PROPERTIES += ro.mount.fs=EXT4
 
 # EGL settings
-BOARD_EGL_CFG := device/huawei/g700/configs/egl.cfg
+BOARD_EGL_CFG := device/asus/me173x/configs/egl.cfg
 USE_OPENGL_RENDERER := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
 
@@ -128,10 +128,10 @@ TARGET_PREBUILT_RECOVERY_KERNEL := $(DEVICE_FOLDER)/recovery/kernel
 BOARD_HAS_NO_SELECT_BUTTON := true
 
 # mkimage to append headers
-TARGET_MKIMAGE := device/huawei/g700/mkimage
+TARGET_MKIMAGE := device/asus/me173x/mkimage
 TARGET_USE_BUILT_BOOTIMAGE := true
 #TARGET_USE_BUILT_RECOVERYIMAGE := true
-BOARD_CUSTOM_BOOTIMG_MK := device/huawei/g700/boot.mk
+BOARD_CUSTOM_BOOTIMG_MK := device/asus/me173x/boot.mk
 
 # wifi
 WPA_SUPPLICANT_VERSION := VER_0_8_X
@@ -146,16 +146,16 @@ WIFI_DRIVER_FW_PATH_AP:="AP"
 WIFI_DRIVER_FW_PATH_P2P:="P2P"
 
 # telephony
-BOARD_RIL_CLASS := ../../../device/huawei/g700/ril/
+BOARD_RIL_CLASS := ../../../device/asus/me173x/ril/
 
-TARGET_SPECIFIC_HEADER_PATH := device/huawei/g700/include
+TARGET_SPECIFIC_HEADER_PATH := device/asus/me173x/include
 
 # allow more than one lun file
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun%d/file"
 
 #SEPolicy
 BOARD_SEPOLICY_DIRS += \
-    device/huawei/g700/sepolicy
+    device/asus/me173x/sepolicy
 
 BOARD_SEPOLICY_UNION += \
     file_contexts \

@@ -13,16 +13,16 @@
 # limitations under the License.
 
 # Inherit device configuration
-$(call inherit-product, device/huawei/g700/full_g700.mk)
+$(call inherit-product, device/asus/me173x/full_me173x.mk)
 $(call inherit-product, vendor/cm/config/common_full_phone.mk)
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1280
-TARGET_SCREEN_WIDTH := 720
+TARGET_SCREEN_WIDTH := 800
 
-PRODUCT_NAME := cm_g700
-PRODUCT_DEVICE := g700
-PRODUCT_MODEL := g700
-PRODUCT_RELEASE_NAME := g700
-PRODUCT_BRAND := Huawei
-PRODUCT_MANUFACTURER := Huawei
+PRODUCT_NAME := cm_me173x
+PRODUCT_DEVICE := me173x
+PRODUCT_MODEL := me173x
+PRODUCT_RELEASE_NAME := me173x
+PRODUCT_BRAND := Asus
+PRODUCT_MANUFACTURER := Asus

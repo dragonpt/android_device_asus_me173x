@@ -1,7 +1,7 @@
 #!/bin/sh
 
-VENDOR=huawei
-DEVICE=g700
+VENDOR=asus
+DEVICE=me173x
 OUTDIR=vendor/$VENDOR/$DEVICE
 MAKEFILE=../../../$OUTDIR/$DEVICE-vendor-blobs.mk
 
