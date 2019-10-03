@@ -181,8 +181,12 @@ TARGET_SCREEN_HEIGHT := 1280
 TARGET_SCREEN_WIDTH := 800
 
 # AAPT
-PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
-$(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
+# Use high-density artwork where available
+PRODUCT_LOCALES += hdpi
+
+# this is an large screen (TAB)
+PRODUCT_AAPT_CONFIG := large hdpi
+
+$(call inherit-product, frameworks/native/build/tablet-7in-hdpi-1024-dalvik-heap.mk)
 
