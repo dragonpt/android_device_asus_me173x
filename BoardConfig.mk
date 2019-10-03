@@ -145,9 +145,6 @@ WIFI_DRIVER_FW_PATH_STA:="STA"
 WIFI_DRIVER_FW_PATH_AP:="AP"
 WIFI_DRIVER_FW_PATH_P2P:="P2P"
 
-# telephony
-BOARD_RIL_CLASS := ../../../device/asus/me173x/ril/
-
 TARGET_SPECIFIC_HEADER_PATH := device/asus/me173x/include
 
 # allow more than one lun file

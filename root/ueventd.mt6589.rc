@@ -67,7 +67,6 @@
 /dev/bma150               0640   compass    system
 /dev/cm3602               0640   compass    system
 /dev/akm8976_pffd         0640   compass    system
-/dev/lightsensor          0640   system     system
 /dev/msm_pcm_out*         0660   system     audio
 /dev/msm_pcm_in*          0660   system     audio
 /dev/msm_pcm_ctl*         0660   system     audio

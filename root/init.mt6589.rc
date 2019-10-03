@@ -231,11 +231,6 @@ on post-fs-data
     chmod 0660 /dev/sec
     chown root system /dev/sec
 
-    # FM Radio device node
-    exec /system/xbin/mknod /dev/fm     c 193 0
-    chmod 0660 /dev/fm
-    chown system media /dev/fm
-
     # device apc settings
     insmod /system/lib/modules/devapc.ko
 
@@ -246,21 +241,18 @@ on post-fs-data
     chmod 0660 /dev/ttyMT1
     chown system system /dev/ttyMT1
 
-    # STP, WMT, GPS, FM and BT Driver
+    # STP, WMT, GPS and BT Driver
     insmod /system/lib/modules/mtk_hif_sdio.ko
     insmod /system/lib/modules/mtk_stp_wmt.ko
     insmod /system/lib/modules/mtk_stp_uart.ko
     insmod /system/lib/modules/mtk_stp_gps.ko
     insmod /system/lib/modules/mtk_stp_bt.ko
-    insmod /system/lib/modules/mtk_fm_drv.ko
-    #insmod /system/lib/modules/mtk_fm_priv.ko
     insmod /system/lib/modules/mtk_wmt_wifi.ko
 
     # Create char device file for WMT, GPS, BT, FM, WIFI
     exec /system/xbin/mknod /dev/stpwmt c 190 0
     exec /system/xbin/mknod /dev/stpgps c 191 0
     exec /system/xbin/mknod /dev/stpbt  c 192 0
-    exec /system/xbin/mknod /dev/fm     c 193 0
     chmod 0660 /dev/stpwmt
     chown system system /dev/stpwmt
     
@@ -271,9 +263,6 @@ on post-fs-data
     # BT
     chmod 0660 /dev/stpbt
     chown bluetooth radio /dev/stpbt
-
-    # FM Radio device, FIXME: this is not a proper way to set permissions
-    chmod 0666 /dev/fm
 
     # GPS
     chmod 0666 /dev/gps
@@ -329,7 +318,6 @@ on post-fs-data
     chmod 0664 /dev/camera-isp
     chmod 0664 /dev/camera-pipemgr
     chmod 0660 /dev/kd_camera_hw
-    chmod 0660 /dev/kd_camera_flashlight
     chmod 0660 /dev/kd_camera_hw_bus2
     chmod 0660 /dev/FM50AF
     chmod 0660 /dev/CAM_CAL_DRV
@@ -341,7 +329,6 @@ on post-fs-data
     chown system camera /dev/camera-isp
     chown system camera /dev/camera-pipemgr
     chown system camera /dev/kd_camera_hw
-    chown system camera /dev/kd_camera_flashlight
     chown system camera /dev/kd_camera_hw_bus2
     chown system camera /dev/FM50AF
     chown system camera /dev/CAM_CAL_DRV
