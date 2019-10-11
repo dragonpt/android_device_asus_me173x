@@ -2,11 +2,12 @@
 # system.prop for Asus me173x
 #
 
+fmradio.driver.chip=3
 gps.solution.combo.chip=1
 mediatek.wlan.chip=MT6628
 mediatek.wlan.ctia=0
 mediatek.wlan.module.postfix=_mt6628
-persist.mtk.wcn.combo.chipid=-1
+persist.mtk.wcn.combo.chipid=0x6628
 ril.current.share_modem=1
 ril.external.md=0
 ril.first.md=1
