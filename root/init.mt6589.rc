@@ -17,24 +17,58 @@ on charger
 on boot
     chown root radio /proc/cmdline
 
-on init  
+on init
+
     export LD_PRELOAD /system/lib/libxlog.so
 
+    mkdir /mnt/shell 0700 shell shell
+    chmod 0750 /mnt/shell
+    chown shell sdcard_r /mnt/shell
     mkdir /mnt/shell/emulated 0700 shell shell
+    mkdir /mnt/shell/emulated/0 0700 shell shell
     mkdir /storage/emulated 0555 root root
+
     mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
     mkdir /storage/sdcard1 0700 root root
+
+    mkdir /mnt/media_rw/usbdisk0 0700 media_rw media_rw
+    mkdir /storage/usbdisk0 0700 root root
+
     export EXTERNAL_STORAGE /storage/emulated/legacy
+    export USBOTG_STORAGE /storage/usbdisk0
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
     export EMULATED_STORAGE_TARGET /storage/emulated
-    export SECONDARY_STORAGE /storage/sdcard1
+    export SECONDARY_STORAGE /storage/sdcard1:/storage/usbdisk0
 
-    # Support legacy paths
+    mount tmpfs tmpfs /storage/emulated mode=0755,uid=1023,gid=1023
+
     symlink /storage/emulated/legacy /sdcard
     symlink /storage/emulated/legacy /mnt/sdcard
     symlink /storage/emulated/legacy /storage/sdcard0
     symlink /mnt/shell/emulated/0 /storage/emulated/legacy
     symlink /mnt/shell/emulated/0 /storage/emulated/0
+    symlink /storage/sdcard1 /mnt/sdcard2
+    symlink /storage/usbdisk0 /usbdisk0
+    symlink /storage/usbdisk0 /mnt/usbdisk0
+
+on post-fs
+    # mount shared so changes propagate into child namespaces
+    mount rootfs rootfs / shared rec
+    mount tmpfs tmpfs /mnt/secure private rec
+
+on fs
+    setprop ro.crypto.fuse_sdcard true
+
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+    class late_start
+
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard1 /storage/sdcard1
+    class late_start
+    disabled
+
+service fuse_usbdisk0 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usbdisk0 /storage/usbdisk0
+    class late_start
+    disabled
 
     mkdir /cache 0771 system cache
 
@@ -57,7 +91,7 @@ on fs
     chown system system /protect_s
     chmod 0771 /protect_f
     chmod 0771 /protect_s
-    setprop ro.crypto.fuse_sdcard true
+    #setprop ro.crypto.fuse_sdcard true
 
     # SGX
     insmod /system/lib/modules/pvrsrvkm.ko
@@ -74,10 +108,6 @@ on fs
 
 on post-fs-data
     setprop vold.post_fs_data_done 1
-
-    # we will remap this as /mnt/sdcard with the sdcard fuse tool
-    mkdir /data/media 0775 media_rw media_rw
-    chown media_rw media_rw /data/media
     
     # create dalvik-cache and double-check the perms, so as to enforce our permissions
     mkdir /data/dalvik-cache 0771 system system
@@ -434,14 +464,12 @@ service pvrsrvctl /system/bin/pvrsrvctl --start
     oneshot
     disabled
 
-# Remove hald: updated wifi driver from kk kernel don't need of hald
-# and also fix wifi hotspot 
 # Connectivity related services
-#service hald /system/bin/hald
-#    class main
-#    socket hald stream 0660 root system
-#    user system
-#    group system radio mount wifi inet net_admin
+service hald /system/bin/hald
+    class main
+    socket hald stream 0660 root system
+    user system
+    group system radio mount wifi inet net_admin
 
 service stp_dump /system/bin/stp_dump3
     user system
@@ -636,12 +664,6 @@ service mnld /system/xbin/mnld
     socket mnld stream 660 gps system
     oneshot
 
-# virtual sdcard daemon running as media_rw (1023)
-service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
-    class late_start
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
-    class late_start
-    disabled
 # CM Performance Profiles
 
 # Powersave
