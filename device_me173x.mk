@@ -55,7 +55,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_PROPERTY_OVERRIDES := \
     service.adb.root=1 \
-    persist.sys.root_access=1
+    persist.sys.root_access=1 \
+    ro.carrier=wifi-only \
+    ro.radio.noril=1
+
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
