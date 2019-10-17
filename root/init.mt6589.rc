@@ -509,11 +509,11 @@ service mtkGD /system/bin/mtkGD
     user system
     group system
 
-on property:wlan.driver.status=ok
-	write /dev/wmtWifi "1"
+#on property:wlan.driver.status=ok
+#	write /dev/wmtWifi "1"
 
-on property:wlan.driver.status=unloaded
-	write /dev/wmtWifi "0"
+#on property:wlan.driver.status=unloaded
+#	write /dev/wmtWifi "0"
 
 service p2p_supplicant /system/bin/wpa_supplicant -dd \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
