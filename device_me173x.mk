@@ -91,6 +91,10 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
         $(LOCAL_PATH)/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
+# Disable dirty regions invalidation
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.hwui.render_dirty_regions=false
+
 # Keylayout
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/mtk-kpd.kl:system/usr/keylayout/mtk-kpd.kl \
