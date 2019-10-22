@@ -43,15 +43,9 @@ PRODUCT_COPY_FILES += \
 	$(MOD_SRC)/vcodec_kernel_driver.ko:$(MOD_TGT)/vcodec_kernel_driver.ko \
 	$(MOD_SRC)/wlan_mt6628.ko:$(MOD_TGT)/wlan_mt6628.ko
 
-# Set default USB interface
-PRODUCT_PROPERTY_OVERRIDES += \
-        persist.sys.usb.config=mtp,adb \
-        ro.allow.mock.location=0 \
-        ro.debuggable=1 \
-        persist.service.adb.enable=1 \
-        persist.service.debuggable=1 \
-        ro.secure=0 \
-        ro.adb.secure=0
+#USB
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+     persist.sys.usb.config=mtp,adb
 
 PRODUCT_PROPERTY_OVERRIDES := \
     service.adb.root=1 \
