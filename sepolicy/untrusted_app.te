@@ -1,0 +1,15 @@
+type untrusted_app, domain;
+
+permissive untrusted_app;
+
+allow untrusted_app hald:dir search;
+
+allow untrusted_app hald:dir getattr;
+allow untrusted_app hald:file { read getattr open };
+
+allow untrusted_app hald:dir { read open };
+allow untrusted_app hald:lnk_file read;
+
+allow untrusted_app hald_socket:sock_file getattr;
+
+allow untrusted_app hald_exec:file getattr;

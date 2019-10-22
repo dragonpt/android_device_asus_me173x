@@ -1,0 +1,7 @@
+permissive resmon;
+init_daemon_domain(resmon)
+
+allow resmon hald:dir search;
+allow resmon hald:file { read open };
+
+allow resmon hald:dir getattr;

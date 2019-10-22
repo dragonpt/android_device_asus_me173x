@@ -1,0 +1,12 @@
+type aee_aed_exec , exec_type, file_type;
+type aee_aed ,domain;
+
+permissive aee_aed;
+init_daemon_domain(aee_aed)
+
+allow aee_aed hald:dir search;
+allow aee_aed hald:file { read getattr open };
+
+allow aee_aed hald:dir { read open };
+
+allow aee_aed hald:dir getattr;

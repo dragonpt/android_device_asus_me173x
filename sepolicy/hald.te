@@ -1,0 +1,23 @@
+type hald_exec , exec_type, file_type;
+type hald ,domain;
+
+permissive hald;
+init_daemon_domain(hald)
+
+allow hald property_socket:sock_file write;
+allow hald self:capability net_admin;
+allow hald self:netlink_socket read;
+allow hald self:udp_socket { create ioctl };
+
+allow hald device:chr_file { write open };
+
+allow hald device:chr_file { read ioctl };
+allow hald system_prop:property_service set;
+
+allow hald linker_exec:file read;
+
+allow hald self:netlink_socket { write bind create setopt getopt };
+
+allow hald linker_exec:file read;
+
+allow hald  property_type:property_service set;

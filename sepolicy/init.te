@@ -1,0 +1,7 @@
+type init, domain;
+
+allow init hald:unix_stream_socket { bind create };
+allow init hald_socket:sock_file { create setattr };
+
+allow init hald:unix_stream_socket { bind create };
+allow init hald_socket:sock_file { create setattr };

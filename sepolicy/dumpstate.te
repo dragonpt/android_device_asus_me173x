@@ -1,0 +1,10 @@
+permissive dumpstate;
+init_daemon_domain(dumpstate)
+
+allow dumpstate hald:dir { read search getattr };
+allow dumpstate hald:file { read open };
+allow dumpstate hald:lnk_file read;
+
+allow dumpstate hald:file getattr;
+
+allow dumpstate hald:dir open;
