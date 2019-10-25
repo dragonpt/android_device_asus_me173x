@@ -53,6 +53,9 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.carrier=wifi-only \
     ro.radio.noril=1
 
+# LOW RAM optimizations
+ADDITIONAL_BUILD_PROPERTIES += \
+ 	config.disable_atlas=true
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
