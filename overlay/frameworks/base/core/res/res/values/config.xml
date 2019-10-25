@@ -99,4 +99,8 @@
          Note: Disable SMS also disable voicemail waiting sms,
                cell broadcasting sms, and MMS. -->
     <bool name="config_sms_capable">false</bool>
+
+    <!-- If true, the doze component is not started until after the screen has been
+         turned off and the screen off animation has been performed. -->
+    <bool name="config_dozeAfterScreenOff">true</bool>
 </resources>
