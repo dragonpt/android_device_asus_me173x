@@ -457,12 +457,11 @@ service battery_charger /charger
 
 
 # SGX init
-service pvrsrvctl /system/bin/pvrsrvctl --start
+service pvrsrvctl /system/vendor/bin/pvrsrvctl --start
     class main
     user root
     group root
     oneshot
-    disabled
 
 # Connectivity related services
 service hald /system/bin/hald
