@@ -59,12 +59,6 @@ PRODUCT_PROPERTY_OVERRIDES := \
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
-# Audio
-PRODUCT_PACKAGES += \
-	audio.r_submix.default \
-	audio.a2dp.default \
-	libblisrc
-
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf
 
