@@ -63,8 +63,7 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 PRODUCT_PACKAGES += \
 	audio.r_submix.default \
 	audio.a2dp.default \
-	libblisrc \
-    libdashplayer
+	libblisrc
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf
