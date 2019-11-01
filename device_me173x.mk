@@ -54,6 +54,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
 
 # LOW RAM optimizations
 ADDITIONAL_BUILD_PROPERTIES += \
+ 	ro.config.low_ram=true \
  	config.disable_atlas=true \
     dalvik.vm.dex2oat-flags=--no-watch-dog
 
