@@ -144,6 +144,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.media.use-awesome=true
 
+# GPU PowerVR properties
+PRODUCT_PROPERTY_OVERRIDES += \
+ 	ro.hwui.disable_scissor_opt=true
+
 # GPU PVR
 PRODUCT_PACKAGES += \
     pvrsrvctl
