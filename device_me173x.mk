@@ -86,9 +86,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/hostapd/hostapd.deny:system/etc/hostapd/hostapd.deny
 
 PRODUCT_COPY_FILES += \
-        $(LOCAL_PATH)/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
-        $(LOCAL_PATH)/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
-        $(LOCAL_PATH)/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
+        $(LOCAL_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
+        $(LOCAL_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
+        $(LOCAL_PATH)/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
 # Disable dirty regions invalidation
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -113,12 +113,12 @@ PRODUCT_PACKAGES += \
 
 # Ramdisk
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/root/fstab.mt6589:root/fstab.mt6589 \
-	$(LOCAL_PATH)/root/ueventd.mt6589.rc:root/ueventd.mt6589.rc \
-	$(LOCAL_PATH)/root/init.mt6589.rc:root/init.mt6589.rc \
-	$(LOCAL_PATH)/root/init.modem.rc:root/init.modem.rc \
-	$(LOCAL_PATH)/root/init.protect.rc:root/init.protect.rc \
-	$(LOCAL_PATH)/root/init.mt6589.usb.rc:/root/init.mt6589.usb.rc
+	$(LOCAL_PATH)/rootdir/fstab.mt6589:root/fstab.mt6589 \
+	$(LOCAL_PATH)/rootdir/ueventd.mt6589.rc:root/ueventd.mt6589.rc \
+	$(LOCAL_PATH)/rootdir/init.mt6589.rc:root/init.mt6589.rc \
+	$(LOCAL_PATH)/rootdir/init.modem.rc:root/init.modem.rc \
+	$(LOCAL_PATH)/rootdir/init.protect.rc:root/init.protect.rc \
+	$(LOCAL_PATH)/rootdir/init.mt6589.usb.rc:/root/init.mt6589.usb.rc
 
 # Permissions
 PRODUCT_COPY_FILES += \
