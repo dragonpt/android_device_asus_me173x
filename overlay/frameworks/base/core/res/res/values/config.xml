@@ -56,8 +56,6 @@
         <item>"bt-pan"</item>
         <item>"bt-dun"</item>   
     </string-array>
-
-    <bool name="config_wifi_background_scan_support">true</bool>
     
     <bool name="config_user_notification_of_restrictied_mobile_access">false</bool>
  
