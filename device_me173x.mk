@@ -56,12 +56,17 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.carrier=wifi-only \
     ro.radio.noril=1
 
+# ART optimizations
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dex2oat-filter=balanced \
+    dalvik.vm.dex2oat-flags=--no-watch-dog \
+    dalvik.vm.image-dex2oat-filter=speed
+
 # LOW RAM optimizations
 ADDITIONAL_BUILD_PROPERTIES += \
  	ro.config.low_ram=true \
     persist.sys.force_highendgfx=true \
- 	config.disable_atlas=true \
-    dalvik.vm.dex2oat-flags=--no-watch-dog
+ 	config.disable_atlas=true
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
