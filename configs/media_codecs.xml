@@ -98,30 +98,5 @@ Only the three quirks included above are recognized at this point:
         </MediaCodec>
     </Decoders>
 
-    <Encoders>
-        <MediaCodec name="OMX.MTK.VIDEO.ENCODER.MPEG4" type="video/mp4v-es" >
-            <Limit name="size" min="64x64" max="640x480" />
-            <Limit name="alignment" value="16x16" />
-            <Limit name="block-size" value="16x16" />
-            <Quirk name="requires-allocate-on-input-ports" />
-            <Quirk name="requires-allocate-on-output-ports" />
-        </MediaCodec>
-        <MediaCodec name="OMX.MTK.VIDEO.ENCODER.H263" type="video/3gpp" >
-            <Limit name="size" min="64x64" max="640x480" />
-            <Limit name="alignment" value="16x16" />
-            <Limit name="block-size" value="16x16" />
-             <Quirk name="requires-allocate-on-input-ports" />
-            <Quirk name="requires-allocate-on-output-ports" />
-        </MediaCodec>
-        <MediaCodec name="OMX.MTK.VIDEO.ENCODER.AVC" type="video/avc" >
-            <Limit name="size" min="128x96" max="1920x1080" />
-            <Limit name="alignment" value="16x16" />
-            <Limit name="block-size" value="16x16" />
-            <Quirk name="requires-allocate-on-input-ports" />
-            <Quirk name="requires-allocate-on-output-ports" />
-        </MediaCodec>
-    </Encoders>
-
     <Include href="media_codecs_google_video_le.xml" />
-    <Include href="media_codecs_ffmpeg.xml" />
 </MediaCodecs>
