@@ -148,9 +148,6 @@ PRODUCT_PACKAGES += \
     charger_res_images \
     libnl_2 \
     libtinyxml
-    
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.media.use-awesome=true
 
 # GPU PowerVR properties
 PRODUCT_PROPERTY_OVERRIDES += \
