@@ -1,5 +1,7 @@
 #include <cutils/log.h>
 
+extern "C" {
+
 struct xlog_record {
 	const char *tag_str;
 	const char *fmt_str;
@@ -8,9 +10,7 @@ struct xlog_record {
 
 static void init(void) __attribute__ ((constructor));
 
-void init(void)
-{
-}
+void init(void){}
 
 int __xlog_buf_printf(int bufid, const struct xlog_record *rec, ...)
 {
@@ -22,6 +22,8 @@ int __xlog_buf_printf(int bufid, const struct xlog_record *rec, ...)
   return 0;
 }
 
-void dl_unregister_notify_function(void){return 0;}
+void dl_unregister_notify_function(void){}
 
-void dl_register_notify_function(int (*load_notify_function) (const char *name,uintptr_t address,uintptr_t size ),int (*unload_notify_function) (const char *name, uintptr_t address)){return 0;}
+void dl_register_notify_function(int (*load_notify_function) (const char *name, uintptr_t address, uintptr_t size), int(*unload_notify_function) (const char *name, uintptr_t address)){}
+
+}
