@@ -19,7 +19,7 @@ on boot
 
 on init
 
-    export LD_PRELOAD /system/lib/libxlog.so
+    export LD_PRELOAD /system/lib/libmtkshim.so
 
     mkdir /mnt/shell 0700 shell shell
     chmod 0750 /mnt/shell
