@@ -126,6 +126,10 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/rootdir/init.protect.rc:root/init.protect.rc \
 	$(LOCAL_PATH)/rootdir/init.mt6589.usb.rc:/root/init.mt6589.usb.rc
 
+# Remove useless packages
+PRODUCT_PACKAGES += \
+    Clean_useless
+
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
