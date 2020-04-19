@@ -162,18 +162,18 @@ TARGET_SPECIFIC_HEADER_PATH := device/asus/me173x/include
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun%d/file"
 
 #SEPolicy
-BOARD_SEPOLICY_DIRS += \
-    device/asus/me173x/sepolicy
+#BOARD_SEPOLICY_DIRS += \
+#    device/asus/me173x/sepolicy
 
-BOARD_SEPOLICY_UNION += \
-    file_contexts \
-    device.te \
-    netd.te \
-    app.te \
-    bootanimation.te \
-    pvrsrvctl.te \
-    surfaceflinger.te \
-    system.te
+#BOARD_SEPOLICY_UNION += \
+#    file_contexts \
+#    device.te \
+#    netd.te \
+#    app.te \
+#    bootanimation.te \
+#    pvrsrvctl.te \
+#    surfaceflinger.te \
+#    system.te
 
 DEVICE_RESOLUTION := 800x1280
 
