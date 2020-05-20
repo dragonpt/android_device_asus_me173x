@@ -161,11 +161,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # GPU PVR
 PRODUCT_PACKAGES += \
-    pvrsrvctl
-    
-# libcorkscrew
-PRODUCT_PACKAGES += \
-	libcorkscrew
+    pvrsrvctl \
+    libcorkscrew
 	
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1280
