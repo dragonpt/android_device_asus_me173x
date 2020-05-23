@@ -22,6 +22,12 @@ LOCAL_PATH := device/asus/me173x
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay/
 
 # Kernel
+ifeq ($(TARGET_PREBUILT_KERNEL),)
+	LOCAL_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
+else
+	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
+endif
+
 # atm prebuilt TODO inline compile
 MOD_TGT := /system/lib/modules
 MOD_SRC := $(LOCAL_PATH)/prebuilt/modules
@@ -124,7 +130,8 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/rootdir/init.mt6589.rc:root/init.mt6589.rc \
 	$(LOCAL_PATH)/rootdir/init.modem.rc:root/init.modem.rc \
 	$(LOCAL_PATH)/rootdir/init.protect.rc:root/init.protect.rc \
-	$(LOCAL_PATH)/rootdir/init.mt6589.usb.rc:/root/init.mt6589.usb.rc
+	$(LOCAL_PATH)/rootdir/init.mt6589.usb.rc:/root/init.mt6589.usb.rc \
+    $(LOCAL_KERNEL):kernel
 
 # Remove useless packages
 PRODUCT_PACKAGES += \

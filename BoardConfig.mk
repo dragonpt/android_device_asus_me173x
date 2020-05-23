@@ -193,3 +193,5 @@ TW_EXTERNAL_STORAGE_PATH := "/external_sdcard"
 TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sdcard"
 TARGET_RECOVERY_FSTAB := $(DEVICE_FOLDER)/rootdir/recovery.fstab
 
+# Hack for building without kernel sources
+$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
