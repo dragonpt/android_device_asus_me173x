@@ -105,8 +105,8 @@
 /proc/driver/nand		0664	root		system
 
 # SGX device node
-/dev/pvrsrvkm             0666   root       root
-/dev/pvr_sync             0666   root       root
+/dev/pvrsrvkm             0666   system graphics
+/dev/pvr_sync             0666   system graphics
 
 # CDMA radio interface MUX
 /dev/ts0710mux*           0640   radio      radio
