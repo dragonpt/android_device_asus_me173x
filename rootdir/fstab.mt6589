@@ -14,8 +14,10 @@
 
 #/devices/platform/mtk-msdc.0/mmc_host/mmc0 auto auto defaults voldmanaged=sdcard1:8,nonremovable,noemulatedsd
 #/devices/platform/mtk-msdc.1/mmc_host/mmc1 auto auto defaults voldmanaged=sdcard0:auto
-/devices/platform/mtk-msdc.0/mmc_host		auto      vfat      defaults        voldmanaged=sdcard0:emmc@fat,noemulatedsd
-/devices/platform/mtk-msdc.1/mmc_host   	auto      vfat      defaults        voldmanaged=sdcard1:auto
+#/devices/platform/mtk-msdc.0/mmc_host		auto      vfat      defaults        voldmanaged=sdcard0:emmc@fat,noemulatedsd
+#/devices/platform/mtk-msdc.1/mmc_host   	auto      vfat      defaults        voldmanaged=sdcard1:auto
+
+/devices/platform/mtk-msdc.1/mmc_host*		auto	auto	defaults		voldmanaged=sdcard1:auto,encryptable=userdata
 
 /devices/platform/mt_usb auto auto defaults voldmanaged=usbdisk0:auto
 
