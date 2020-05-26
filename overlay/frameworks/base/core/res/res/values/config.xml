@@ -62,15 +62,6 @@
    <!-- Make things go fast -->
     <bool name="config_ui_enableFadingMarquee">false</bool>
 
- <add-resource type="string" name="com.google.android.webview"></add-resource>
-   
-    <!-- Package name providing default WebView implementation. -->
-    <string name="com.google.android.webview" translatable="false">com.android.webview</string>
-
-    <!-- Package name providing alternate WebView implementation.
-         Fall back to config_webViewPackageName if not available. -->
-    <string name="config_alternateWebViewPackageName" translatable="false">com.google.android.webview</string>
-
     <!-- Flag indicating whether the current device is "voice capable".
          If true, this means that the device supports circuit-switched
          (i.e. voice) phone calls over the telephony network, and is
