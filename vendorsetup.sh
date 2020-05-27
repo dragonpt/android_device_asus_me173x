@@ -16,5 +16,5 @@
 
 for i in eng userdebug user; do
     add_lunch_combo full_me173x-${i}
-    add_lunch_combo cm_me173x-${i}
+    add_lunch_combo lineage_me173x-${i}
 done
