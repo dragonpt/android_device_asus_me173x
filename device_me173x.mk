@@ -60,6 +60,11 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.carrier=wifi-only \
     ro.radio.noril=1
 
+# ART optimizations
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dex2oat-filter=balanced \
+    dalvik.vm.image-dex2oat-filter=speed
+
 # LOW RAM optimizations
 ADDITIONAL_BUILD_PROPERTIES += \
  	ro.config.low_ram=true \
