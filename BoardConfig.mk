@@ -110,6 +110,9 @@ WIFI_DRIVER_FW_PATH_STA:=STA
 WIFI_DRIVER_FW_PATH_AP:=AP
 WIFI_DRIVER_FW_PATH_STA:=P2P
 
+#Art
+MALLOC_IMPL := dlmalloc 
+
 TARGET_SPECIFIC_HEADER_PATH := device/asus/me173x/include
 
 # allow more than one lun file
