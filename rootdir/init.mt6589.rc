@@ -19,8 +19,6 @@ on boot
 
 on init
 
-    export LD_PRELOAD /system/lib/libmtkshim.so
-
    # See storage config details at http://source.android.com/tech/storage/
     mkdir /storage/sdcard 0555 root root
  
