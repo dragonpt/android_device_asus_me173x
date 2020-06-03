@@ -134,8 +134,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
 # Remove useless packages
-PRODUCT_PACKAGES += \
-    Clean_useless
+#PRODUCT_PACKAGES += \
+#    Clean_useless
 
 # Permissions
 PRODUCT_COPY_FILES += \
