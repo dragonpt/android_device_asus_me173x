@@ -5,28 +5,24 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := Clean_useless
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
-LOCAL_OVERRIDES_PACKAGES := BasicSmsReceiver \
-                            Browser \
-                            Camera2 \
-                            Camera \
-                            CMUpdater \
-                            Contacts \
+LOCAL_OVERRIDES_PACKAGES := Camera2 \
                             Galaxy4 \
                             HoloSpiralWallpaper \
-                            LiveWallpapersPicker \
                             LiveWallpapers \
-                            MagicSmokeWallpapers \
+                            LiveWallpapersPicker \
                             NoiseField \
                             PhaseBeam \
-                            Telecom \
-                            TelephonyProvider \
-                            TeleService \
-                            VisualizationWallpapers \
-                            InCallUI \
+                            PhotoPhase \
+                            PhotoTable \
+                            CallLogBackup \
+                            CarrierConfig \
+                            CMUpdater \
+                            Contacts \
                             ContactsProvider \
                             Dialer \
-                            Mms \
-                            MmsService
+                            MmsService \
+                            Telecom \
+                            TelephonyProvider
 #superdragonpt TODO may remove in the future
 # Screencast/ SoundRecorder /CMFileManager /PrintSpooler
 LOCAL_UNINSTALLABLE_MODULE := true
