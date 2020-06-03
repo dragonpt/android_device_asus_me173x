@@ -57,16 +57,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
      persist.sys.usb.config=mtp,adb
 
 PRODUCT_PROPERTY_OVERRIDES := \
-    service.adb.root=1 \
-    persist.sys.root_access=1 \
     ro.carrier=wifi-only \
     ro.radio.noril=1
-
-# ART optimizations
-PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.dex2oat-filter=balanced \
-    dalvik.vm.dex2oat-flags=--no-watch-dog \
-    dalvik.vm.image-dex2oat-filter=speed
 
 # LOW RAM optimizations
 ADDITIONAL_BUILD_PROPERTIES += \
@@ -185,4 +177,3 @@ PRODUCT_LOCALES += hdpi
 PRODUCT_AAPT_CONFIG := large hdpi
 
 $(call inherit-product, frameworks/native/build/tablet-7in-hdpi-1024-dalvik-heap.mk)
-
