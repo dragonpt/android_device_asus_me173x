@@ -28,6 +28,37 @@ on init
     symlink storage/sdcard /sdcard
     symlink storage/sdcard /mnt/sdcard
 
+    # GPS
+    chown gps gps /sys/class/gpsdrv/gps/pwrctl
+    chown gps gps /sys/class/gpsdrv/gps/suspend
+    chown gps gps /sys/class/gpsdrv/gps/state
+    chown gps gps /sys/class/gpsdrv/gps/pwrsave
+    chown gps gps /sys/class/gpsdrv/gps/status
+
+    # Thermal
+    #change permissions on thermal devices
+    chown root system /proc/mtktscpu/mtktscpu
+    chmod 0660 /proc/mtktscpu/mtktscpu
+    chown root system /proc/mtktsabb/mtktsabb
+    chmod 0660 /proc/mtktsabb/mtktsabb
+    chown root system /proc/mtktsbattery/mtktsbattery
+    chmod 0660 /proc/mtktsbattery/mtktsbattery
+    chown root system /proc/mtktspa/mtktspa
+    chmod 0660 /proc/mtktspa/mtktspa
+    chown root system /proc/mtktspmic/mtktspmic
+    chmod 0660 /proc/mtktspmic/mtktspmic
+    chown root system /proc/driver/mtk_thermal_monitor
+    chmod 0660 /proc/driver/mtk_thermal_monitor
+    chown root radio /proc/driver/mtm_scen_call
+    chmod 0660 /proc/driver/mtm_scen_call
+    chown system system /proc/driver/mtk_cl_sd_pid
+    chmod 0660 /proc/driver/mtk_cl_sd_pid
+    chown root system /proc/wmt_tm/wmt_tm
+    chown system system /proc/wmt_tm/tm_pid
+    chown system system /proc/wmt_tm/tx_thro
+    chown system system /proc/wmt_tm/wmt_val
+    chown system system /proc/wmt_tm/wfd_stat
+
 on post-fs
     # mount shared so changes propagate into child namespaces
     mount rootfs rootfs / shared rec
@@ -92,6 +123,12 @@ on post-fs-data
     mkdir /data/nvram 0771 root system
     mkdir /data/nvram/bt 2771 bluetooth bluetooth
     mkdir /data/nvram/media 0771 media audio
+
+    # GPS
+    mkdir /data/agps_supl 0771 gps system
+    mkdir /data/gps_mnl 0771 gps system
+
+    mkdir /data/misc/gps 0770 gps gps
 
     #give system access to rfkill device node
     chmod 0660 /dev/rfkill
@@ -162,6 +199,7 @@ on post-fs-data
 
     #Accdet
     chown root radio /sys/devices/platform/Accdet_Driver/driver/accdet_call_state
+
     #VideoCodec
     insmod /system/lib/modules/vcodec_kernel_driver.ko
     exec /system/xbin/mknod /dev/Vcodec c 160 0
@@ -245,22 +283,16 @@ on post-fs-data
     exec /system/xbin/mknod /dev/wmtWifi c 153 0
     chmod 0666 /dev/wmtWifi
     chown system system /dev/wmtWifi
+
+    # GPS
+    chmod 0666 /dev/gps
+    chown system gps /dev/gps
+    chmod 0660 /dev/stpgps
+    chown gps gps /dev/stpgps
     
     # BT
     chmod 0660 /dev/stpbt
     chown bluetooth radio /dev/stpbt
-
-    # GPS
-    chmod 0666 /dev/gps
-    chmod 0660 /dev/stpgps
-    mkdir /data/agps_supl 0771 gps system
-    mkdir /data/gps_mnl 0771 gps system
-    chown gps gps /dev/stpgps
-    chown gps gps /sys/class/gpsdrv/gps/pwrctl
-    chown gps gps /sys/class/gpsdrv/gps/suspend
-    chown gps gps /sys/class/gpsdrv/gps/state
-    chown gps gps /sys/class/gpsdrv/gps/pwrsave
-    chown gps gps /sys/class/gpsdrv/gps/status
 
     # WiFi
     mkdir /data/misc/wifi 0770 wifi wifi
@@ -354,10 +386,6 @@ on post-fs-data
     #chmod 0666 /dev/pvr_sync
     #chown system graphics /dev/pvr_sync
 
-    # mtk_sched
-    chmod 0660 /dev/mtk_sched
-    chown system media /dev/mtk_sched
-
     # dhcp
     chown dhcp wifi /data/misc/dhcp
     chown dhcp dhcp /data/misc/dhcp/dnsmasq.leases
@@ -366,28 +394,6 @@ on post-fs-data
     chown root radio /proc/cmdline
     chown system system /sys/devices/system/cpu/cpufreq/hotplug/cpu_num_base
     chmod 0660 /sys/devices/system/cpu/cpufreq/hotplug/cpu_num_base
-
-    ## Thermal
-    #change permissions on thermal devices
-    chown root system /proc/mtktscpu/mtktscpu
-    chmod 0660 /proc/mtktscpu/mtktscpu
-    chown root system /proc/mtktsbattery/mtktsbattery
-    chmod 0660 /proc/mtktsbattery/mtktsbattery
-    chown root system /proc/mtktspa/mtktspa
-    chmod 0660 /proc/mtktspa/mtktspa
-    chown root system /proc/mtktspmic/mtktspmic
-    chmod 0660 /proc/mtktspmic/mtktspmic
-    chown root system /proc/driver/mtk_thermal_monitor
-    chmod 0660 /proc/driver/mtk_thermal_monitor
-    chown root radio /proc/driver/mtm_scen_call
-    chmod 0660 /proc/driver/mtm_scen_call
-    chown system system /proc/gpufreq/gpufreq_loading_state
-    chmod 0660 /proc/gpufreq/gpufreq_loading_state
-    chown root system /proc/wmt_tm/wmt_tm
-    chown system system /proc/wmt_tm/tm_pid
-    chown system system /proc/wmt_tm/tx_thro
-    chown system system /proc/wmt_tm/wmt_val
-    chown system system /proc/wmt_tm/wfd_stat
 
 ##Netlog tool
    #change permissions about terminal
@@ -608,20 +614,9 @@ service thermal /system/bin/thermal
     user system
     group system
 
-# gps
-service agpsd /system/bin/mtk_agpsd
-    class main
-    socket agpsd stream 660 gps system
-    socket agpsd2 stream 660 gps system
-    socket agpsd3 stream 660 gps system
-    user root
-	group gps ccci inet sdcard_r sdcard_rw misc
-	oneshot
-
 service mnld /system/xbin/mnld
     class main
     user root
     group system gps inet misc sdcard_rw sdcard_r media_rw
     socket mnld stream 660 gps system
     oneshot
-
