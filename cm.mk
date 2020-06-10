@@ -19,6 +19,7 @@ $(call inherit-product, vendor/cm/config/common_full_tablet_wifionly.mk)
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1280
 TARGET_SCREEN_WIDTH := 800
+TARGET_BOOTANIMATION_HALF_RES := true 
 
 PRODUCT_NAME := lineage_me173x
 PRODUCT_DEVICE := me173x
