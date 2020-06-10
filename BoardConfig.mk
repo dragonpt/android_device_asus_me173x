@@ -16,6 +16,9 @@ DEVICE_FOLDER := device/asus/me173x
 TARGET_SPECIFIC_HEADER_PATH := device/asus/me173x/include
 -include vendor/asus/me173x/BoardConfigVendor.mk
 
+#Disable lineage charger (merged on MM)
+WITH_CM_CHARGER := false
+
 # board
 TARGET_BOARD_PLATFORM := mt6589
 TARGET_ARCH := arm
