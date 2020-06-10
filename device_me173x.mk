@@ -69,7 +69,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 ADDITIONAL_BUILD_PROPERTIES += \
  	ro.config.low_ram=true \
     persist.sys.force_highendgfx=true \
- 	config.disable_atlas=true
+ 	config.disable_atlas=true \
+    dalvik.vm.jit.codecachesize=0 \
+    ro.config.max_starting_bg=8 \
+    ro.sys.fw.bg_apps_limit=16
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
@@ -185,4 +188,4 @@ PRODUCT_LOCALES += hdpi
 # this is an large screen (TAB)
 PRODUCT_AAPT_CONFIG := large hdpi
 
-$(call inherit-product, frameworks/native/build/tablet-7in-hdpi-1024-dalvik-heap.mk)
+$(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
