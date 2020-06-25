@@ -22,7 +22,8 @@ LOCAL_OVERRIDES_PACKAGES := Camera2 \
                             Dialer \
                             MmsService \
                             Telecom \
-                            TelephonyProvider
+                            TelephonyProvider \
+                            AudioFX
 #superdragonpt TODO may remove in the future
 # Screencast/ SoundRecorder /CMFileManager /PrintSpooler
 LOCAL_UNINSTALLABLE_MODULE := true
