@@ -5,16 +5,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := Clean_useless
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
-LOCAL_OVERRIDES_PACKAGES := Camera2 \
-                            Galaxy4 \
-                            HoloSpiralWallpaper \
-                            LiveWallpapers \
-                            LiveWallpapersPicker \
-                            NoiseField \
-                            PhaseBeam \
-                            PhotoPhase \
-                            PhotoTable \
-                            CallLogBackup \
+LOCAL_OVERRIDES_PACKAGES := CallLogBackup \
                             CarrierConfig \
                             CMUpdater \
                             Contacts \
