@@ -189,3 +189,6 @@ PRODUCT_LOCALES += hdpi
 PRODUCT_AAPT_CONFIG := large hdpi
 
 $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
+
+# Config to include Prebuilt stuff in vendor
+$(call inherit-product, vendor/asus/me173x/config/common.mk)
