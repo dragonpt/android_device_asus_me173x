@@ -6,6 +6,8 @@ on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug
     setprop ro.mtk.hardware mt6589
 
+symlink /data/tombstones /tombstones
+
 on charger
     mount ext4 /emmc@android /system ro wait
     start battery_charger
