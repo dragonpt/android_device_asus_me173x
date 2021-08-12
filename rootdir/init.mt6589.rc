@@ -337,9 +337,6 @@ on post-fs-data
     chmod 0660 /dev/kd_camera_hw_bus2
     chmod 0660 /dev/FM50AF
     chmod 0660 /dev/CAM_CAL_DRV
-    chmod 0660 /dev/OV8825AF
-    chmod 0660 /dev/OV8825TRULYAF
-    chmod 0660 /dev/OV8826AF
 
     chown system camera /dev/camera-sysram
     chown system camera /dev/camera-isp
@@ -348,9 +345,6 @@ on post-fs-data
     chown system camera /dev/kd_camera_hw_bus2
     chown system camera /dev/FM50AF
     chown system camera /dev/CAM_CAL_DRV
-    chown system camera /dev/OV8825AF
-    chown system camera /dev/OV8825TRULYAF
-    chown system camera /dev/OV8826AF
 
     #MATV
     chmod 0660 /dev/MATV
@@ -473,12 +467,6 @@ service mtkGD /system/bin/mtkGD
     class main
     user system
     group system
-
-#on property:wlan.driver.status=ok
-#	write /dev/wmtWifi "1"
-
-#on property:wlan.driver.status=unloaded
-#	write /dev/wmtWifi "0"
 
 service p2p_supplicant /system/bin/wpa_supplicant -dd \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
