@@ -18,6 +18,7 @@ on charger
 
 on boot
     chown root radio /proc/cmdline
+    write /proc/sys/vm/swappiness 100
 
 on init
 
@@ -80,6 +81,8 @@ on fs
 
 on fs
     mount_all /fstab.mt6589
+    swapon_all /fstab.mt6589
+
     mkdir /protect_f
     mkdir /protect_s 
 
