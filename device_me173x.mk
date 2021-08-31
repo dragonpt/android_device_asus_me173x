@@ -49,8 +49,8 @@ PRODUCT_COPY_FILES += \
 	$(MOD_SRC)/wlan_mt6628.ko:$(MOD_TGT)/wlan_mt6628.ko
 
 #SHIMS
-#PRODUCT_PACKAGES += \
-#   libmtkshim
+PRODUCT_PACKAGES += \
+   libmtkshim
 
 #USB
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
