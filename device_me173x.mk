@@ -182,7 +182,14 @@ PRODUCT_LOCALES += hdpi
 # this is an large screen (TAB)
 PRODUCT_AAPT_CONFIG := large hdpi
 
-$(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
+# Provides overrides to configure the Dalvik heap for the device
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.heapstartsize=8m \
+    dalvik.vm.heapgrowthlimit=192m \
+    dalvik.vm.heapsize=256m \
+    dalvik.vm.heaptargetutilization=0.75 \
+    dalvik.vm.heapminfree=512k \
+    dalvik.vm.heapmaxfree=8m
 
 # Config to include Prebuilt stuff in vendor
 $(call inherit-product, vendor/asus/me173x/config/common.mk)
