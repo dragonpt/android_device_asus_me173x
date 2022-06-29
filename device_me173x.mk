@@ -70,9 +70,7 @@ ADDITIONAL_BUILD_PROPERTIES += \
  	ro.config.low_ram=true \
     persist.sys.force_highendgfx=true \
  	config.disable_atlas=true \
-    dalvik.vm.jit.codecachesize=0 \
-    ro.config.max_starting_bg=8 \
-    ro.sys.fw.bg_apps_limit=16
+    dalvik.vm.jit.codecachesize=0
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
